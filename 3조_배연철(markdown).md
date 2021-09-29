@@ -21,7 +21,7 @@
 
 #### Inline Code block
 
-- backtick(`)를 이용하여 작성
+- backtick(`) 1개를 이용하여 작성
 - `*`
 
 #### Link
@@ -31,7 +31,7 @@
 
 #### 이미지
 
-- Link에 !를 앞에 붙여주면 사용 가능
+- Link에 `!`를 앞에 붙여주면 사용 가능
 - 그 외에도 drag and drop 방식으로 사용 가능
 
 #### blockquotes(인용문)
@@ -73,7 +73,7 @@
 
   ___
 
-#### 미세 tip
+#### 미세 Typora tip
 
 - ctrl + shift +[ , ] 를 통해 목록을 만들 수 있다.
 - ctrl + [ , ]를 통해 상위 하위 목록으로 변경이 가능하다.
