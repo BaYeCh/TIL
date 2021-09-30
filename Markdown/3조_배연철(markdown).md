@@ -148,8 +148,9 @@
 
 - 커밋을 통해 완전한 버전으로 기록이 됨
 - 고유한 커밋을 hash값으로 표기
-
 - 명확하게 작성해야 함(띄어쓰기를 잘해야 함)
+- 첫 번째 커밋을 root-commit이라 함
+- 커밋을 바꾸는 것은 항상 주의!!
 
 ###### $ git status
 
@@ -187,3 +188,30 @@
 
 - `압축파일` .git 파일 X -> 새롭게 `init`하면 새로운 로컬저장소가 됨.
 
+### branch
+
+#### 목적
+
+- 협업을 위해
+
+#### branch 상황
+
+- 한 곳에서 모두 다 전담한 상황 : 전담한 곳이 master가 되는 상황
+
+- 나눠서 진행하는 상황 : 따로 작업 후 merge commit 상황
+
+- 공동으로 작업하는 상황 : merge commit은 발생하나, 바로 merge는 불가
+
+  ​											충돌 해결 필요
+
+```bash 
+$ git commit
+error: Committing is not possible because you have unmerged files.
+hint: Fix them up in the work tree, and then use 'git add/rm <file>'
+hint: as appropriate to mark resolution and make a commit.
+fatal: Exiting because of an unresolved conflict.
+U       README.md
+
+```
+
+- 항상 에러 메시지에 주목할 것!!
