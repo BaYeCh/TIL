@@ -47,35 +47,35 @@ query문을 직접 작성하는 것을 목표로 한다.
 
 ### CRUD
 
-1. Create (생성, 데이터 삽입)
+#### Create (생성, 데이터 삽입)
 
-   - 우리가 저장할 테이블을 만드는 것, 구조 잡기
-   - 구조 안에 구체적인 값을 집어 넣는 것, 인스턴스(레코드) 생성 하는 것
-   - 생성 코드
+- 우리가 저장할 테이블을 만드는 것, 구조 잡기
+- 구조 안에 구체적인 값을 집어 넣는 것, 인스턴스(레코드) 생성 하는 것
+- 생성 코드
 
-   ```sql
-   CREATE TABLE 식별자이름(
-       
-   );
-   ```
+```sql
+CREATE TABLE 식별자이름(
+    
+);
+```
 
-   - 삽입 코드
+- 삽입 코드
 
-   ```sql
-   INSERT INTO userTBL VALUES('~~','--');
-   ```
+```sql
+INSERT INTO userTBL VALUES('~~','--');
+```
 
-   위의 경우는 userTBL이 가진 모든 변수를 적어주어야 한다.
+위의 경우는 userTBL이 가진 모든 변수를 적어주어야 한다.
 
-   ```sql
-   INSERT INTO userTBL('~~','--') VALUES;
-   ```
+```sql
+INSERT INTO userTBL('~~','--') VALUES;
+```
 
-   위의 코드를 통해 userTBL에 특정 정보만을 삽입할 수도 있다.
+위의 코드를 통해 userTBL에 특정 정보만을 삽입할 수도 있다.
 
-2. Read (조회)
+#### Read (조회)
 
-   - 
+- 
 
 ## SQL 문법
 
@@ -104,3 +104,54 @@ query문을 직접 작성하는 것을 목표로 한다.
   - CHAR : 고정길이 문자형, 숫자 없이 문자열만 
   - NCHAR : 유니코드 고정길이 문자형, 한글을 저장할 수 있다.(N : national)
   - VARCHAR : 가변길이형 문자열로 공간의 효율적 운용이 가능
+
+### 제약 조건
+
+ : 데이터의 무결성을 지키기 위한 제한된 조건
+
+무조건적으로 입력되는 것이 아닌 어떠한 조건을 만족했을 때 입력되도록 제약할 수 있음
+
+- PRIMARY KEY : 기본키, NOT NULL + UNIQUE
+
+```SQL
+userID CHAR(8) PRIMARY KEY
+```
+
+- FOREIGN KEY : 두 테이블 사이의 관계를 선언함으로써, 데이터의 무결성을 보장해주는 역할
+
+  관계설정 시 하나의 테이블이 다른 테이블에 의존하게 됨
+
+  ```sql
+  CREATE TABLE userTBL (
+  	userID CHAR(8) NOT NULL PRIMARY KEY,
+      --중략--
+  );
+  CREATE TABLE buyTBL(
+  	userID CHAR(8) REFERENCES userTBL(userID),
+      --중략--
+  );
+  ```
+
+  ``REFERENCE`` 키워드를 이용하여 설정
+
+  외래 키 테이블이 참조하는 기준 테이블의 열은 반드시 Primary key이거나, Unique 제약 조건이 설정되어 있어야 함.
+
+- UNIQUE
+
+  '중복되지 않는 유일한 값'을 입력해야 하는 조건, NULL값을 허용함.
+
+- CHECK
+
+  입력되는 데이터를 점검
+
+  ```sql
+  CHECK (height >= 0);
+  ```
+
+- DEFAULT
+
+  값을 입력하지 않았을 때 자동으로 입력되는 기본 값을 정의
+
+- NULL
+
+  NULL값 허용
