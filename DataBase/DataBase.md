@@ -75,7 +75,19 @@ INSERT INTO userTBL('~~','--') VALUES;
 
 #### Read (조회)
 
-- 
+- ```sql
+  SELECT userID, userName
+  FROM userTBL;
+  ```
+
+  ![SELECT](md-images/untitle.png/SELECT.JPG)
+
+  ```sql
+  SELECT *
+  FROM userTBL;
+  ```
+
+  ``*``는 전체를 불러옴
 
 ## SQL 문법
 
