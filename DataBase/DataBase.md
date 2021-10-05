@@ -65,7 +65,7 @@ CREATE TABLE 식별자이름(
 INSERT INTO userTBL VALUES('~~','--');
 ```
 
-위의 경우는 userTBL이 가진 모든 변수를 적어주어야 한다.
+위의 경우는 userTBL이 가진 열 순서 및 개수와 동일해야 한다.
 
 ```sql
 INSERT INTO userTBL('~~','--') VALUES;
@@ -74,6 +74,8 @@ INSERT INTO userTBL('~~','--') VALUES;
 위의 코드를 통해 userTBL에 특정 정보만을 삽입할 수도 있다.
 
 #### Read (조회)
+
+- 조회할 때는 열 순서가 달라도 가능하다. 단, 바뀐 열 순서대로 출력된다.
 
 - ```sql
   SELECT userID, userName
@@ -88,6 +90,40 @@ INSERT INTO userTBL('~~','--') VALUES;
   ```
 
   ``*``는 전체를 불러옴
+
+#### Update (수정)
+
+- 입력된 데이터를 본인이 원하는 데이터로 바꿈
+
+```sql
+UPDATE 테이블이름
+	SET 열1 = 값1,  열2 = 값2
+	WHERE 조건;
+```
+
+- WHERE절은 생략가능하지만 생략 시 테이블 전체의 행이 변경.
+
+  현재의 단가가 1.5배 인상되었을 때
+
+  ```sql
+  UPDATE buyTBL SET price = price * 1.5;
+  ```
+
+#### Delete (삭제)
+
+- 데이터의 삭제
+
+  ```sql
+  DELETE FROM 테이블 이름 WHERE 조건;
+  ```
+
+  where문 생략 시 전체 삭제.
+
+#### ROLLBACK
+
+- 앞에서 지우거나 변경한 사항들을 변경 전의 상황으로 되돌림
+- 보통 교육용 코딩 프로그램은 자동 커밋이 진행되기 때문에 따로 커밋을 하지 않아도 됨
+- 그러나 실무에서는 이를 수동으로 해놓는 경우가 있으니 주의
 
 ## SQL 문법
 
@@ -167,3 +203,5 @@ userID CHAR(8) PRIMARY KEY
 - NULL
 
   NULL값 허용
+
+파일을 자바에 연결하고 자바에서 sql 쿼리를 만들어서 제공한다. 
