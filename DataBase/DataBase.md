@@ -91,6 +91,134 @@ INSERT INTO userTBL('~~','--') VALUES;
 
   ``*``는 전체를 불러옴
 
+- where절에는 연산자등을 이용해서 조건을 형성할 수 있다.
+
+- 연속된 값의 경우 (BETWEEN AND)
+
+  ```SQL
+  SELECT userName, addr FROM userTBL WHERE height BETWEEN 180 AND 183;
+  ```
+
+  해석 : userTBL테이블에서 180~183 사이의 키를 가진 userName 과 addr를 조회
+
+- 연속되지 않은 경우 (IN())
+
+  ```sql
+  SELECT userName, addr FROM userTBL WHERE addr IN('경남','전남','경북')
+  ```
+
+  해석 : userTBL테이블에서 경남, 전남, 경북의 주소를 가진 userName과 addr을 조회
+
+- LIKE 연산자
+
+  ```sql
+  SELECT userName, height FROM userTBL WHERE userName LIKE '김%'
+  ```
+
+  해석 : userTBL 테이블에서 userName이 김으로 시작하는 모든 userName 과 height를 조회
+
+  - % : 무엇이든 허용, 이외에도  ( _ )(underbar) : 한 글자(어떤 것이든 상관없음) 등이 있음
+
+- 서브쿼리(SubQuery, 하위쿼리)
+
+  ```sql
+  SELECT userName, height FROM userTBL WHERE height > (SELECT height FROM userTBL WHERE userName = '김경호');
+  ```
+
+  where절의 조건을 SELECT문(서브쿼리)으로 특정지을 수 있다. 그러나 만약 SELECT문이 하나로 특정짓지 못하면 오류가 발생할 수 있다. 
+
+  - 그런 경우에는 SELECT문(서브쿼리문) 앞에 
+
+    ANY(서브쿼리의 여러 개의 결과 중 한 가지만 만족해도 됨)
+
+    ALL(서브쿼리의 여러 개의 결과를 모두 만족)
+
+    SOME(ANY와 동일한 의미)
+
+    을 이용해서 처리해줄 수 있다.
+
+- 조회 순서
+
+  1.  데이터베이스에 접속
+  2. sql 쿼리 작성 후 입력
+  3. 출력을 받음
+  4. 쿼리와 데이터베이스를 닫음
+  5. 결과 처리
+
+- ```java
+  //접속
+  public Connection getConnection(){
+      Connection con = null;
+      String driver = "oracle.jdbc.OracleDriver";
+      String url = "jdbc:oracle:thin:@localhost:1521:xe";
+      String id = "HR";
+      String pwd = "1234";
+      
+      Class.forName(driver);
+      con = DriverManager.getConnection(url,id,pwd);
+      return con;
+  }
+  ```
+
+- ```java
+  //전체 조회
+  public void readAll(){
+      Connection con = this.getConnection();
+      Statement stmt = con.createStatement();
+      String sql = "SELECT * FROM userTBL3";
+      System.out.println(sql);//출력확인
+      ResultSet rs = stmt.executeQuery(sql);
+      while(rs.next()){
+          //결과를 받는 작업: 데이터를 인스턴스에 집어넣어서 리스트나 COLLECTION으로 변경
+  		System.out.println(rs.getString("userID")+","
+                     +rs.getString("userName")+rs.getInt("birthYear"));
+      }
+      rs.close();
+      stmt.close();
+      con.close();
+  }
+  //결과
+  SELECT * FROM userTBL3
+  LSG     ,이승기,1987
+  KBS     ,김범수,1979
+  KKH     ,김경호,1971
+  JYP     ,조용필,1950
+  LJB     ,임재범,1963
+  EJW     ,은지원,1972
+  JKW     ,조관우,1965
+  BBK     ,바비킴,1973
+  ```
+
+- ```java
+  //조건 조회
+  public void readCondition (String data){
+      Connection con = this.getConnection();
+      String sql = "SELECT * FROM userTBL3 WHERE userID = ?";
+      PreparedStatement stmt = con.preapareStatement(sql);
+      stmt.setString(1,data);
+      System.out.println(sql);
+      ResultSet rs = stmt.executeQuery();
+      while(rs.next()){
+          System.out.println(rs.getString("userID")+","
+                     +rs.getString("userName")+rs.getInt("birthYear"));
+      }
+      rs.close();
+      stmt.close();
+      con.close();
+  }
+  //결과
+  SELECT * FROM userTBL3 WHERE userID = ?
+  JYP     ,조용필,1950
+  //기본키의 데이터 타입이 CHAR로 빈칸 까지 포함하지 않으면 원하는 결과값을 얻을 수 없었다.
+  //따라서 VARCHAR로 데이터타입을 변경하거나 빈칸을 포함하여 파라메터를 설정해주어야 한다.
+  ```
+
+- 위의 모든 과정 중에 Exception을 하는 과정은 생략했다.
+
+  - throws 이후 실행클래스에서 try /catch
+
+- 쿼리를 데이터베이스에 입력하고 출력받는 코드는 동일 형태로 기억할 것!
+
 #### Update (수정)
 
 - 입력된 데이터를 본인이 원하는 데이터로 바꿈
@@ -205,3 +333,10 @@ userID CHAR(8) PRIMARY KEY
   NULL값 허용
 
 파일을 자바에 연결하고 자바에서 sql 쿼리를 만들어서 제공한다. 
+
+## DataBase Modeling
+
+- 현 세계에서 사용되는 작업이나 사물들을 DBMS의 데이터베이스 개체로 옮기기 위한 과정
+- 과거에 고도의 복잡한 업무절차(function의 비중이 커짐)로 인해 빈도가 줄어들었음
+- 복잡한 절차는 데이터베이스가 감당하기 어렵고 이를 자바와 같은 프로그래밍 언어가 대신 하게 됨
+- 개념적 모델링, 논리적 모델링, 물리적 모델링으로 나뉨
