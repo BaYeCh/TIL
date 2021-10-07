@@ -2,6 +2,12 @@
 
 일련의 데이터들을 사용자가 이용할 수 있게끔 가공, 정제하는 과정, 비절차적 언어, 무결성 : 오염되지 않은 데이터들의 집합, 판단의 로직이 아니라 판단의 근거가 되는 데이터를 집어넣은 것
 
+계획된 정보만을 꺼낼 수 있다는 단점을 가짐, 시간이 지남에 따라 정보의 요구도와 중요도가 바뀌어서 유동적인 정보에 취약함
+
+-변경하면 되지 않습니까? 변경하기가 힘들다. DB 자체에서는 프로세스를 할 수 없음 수정을하려면 전체를 다시 짜야하는 번거로움이 있음.
+
+빅데이터와 DB는 상호보완적인 관계임
+
 ## DBMS
 
 Data Base Management System
@@ -278,8 +284,24 @@ UPDATE 테이블이름
   ```
 
   - CHAR : 고정길이 문자형, 숫자 없이 문자열만 
-  - NCHAR : 유니코드 고정길이 문자형, 한글을 저장할 수 있다.(N : national)
+  
+  - NCHAR : 유니코드 고정길이 문자형, 한글을 저장할 수 있다.(N : national, 유니코드 시)
+  
   - VARCHAR : 가변길이형 문자열로 공간의 효율적 운용이 가능
+  
+  - CLOB : Character Long Object 대용량 텍스트의 데이터 타입(영문)
+  
+  - NCLOB : 유니코드 데이터 타입
+  
+  - BLOB : Binary LOB, 대용량 이진 데이터를 저장 가능(동영상, 음악파일)
+  
+  - DATE : 연,월,일,시,분,초가 저장됨
+  
+    - ```sql
+      SELECT SYSDATE FROM DUAL ; -현재 날짜
+      ```
+  
+  - TIMESTAMP : DATE와 같으나 밀리초 단위까지 저장
 
 ### 제약 조건
 
@@ -333,6 +355,142 @@ userID CHAR(8) PRIMARY KEY
   NULL값 허용
 
 파일을 자바에 연결하고 자바에서 sql 쿼리를 만들어서 제공한다. 
+
+### 데이터 형 변환
+
+- CAST함수
+
+  ```sql
+  CAST (expression AS 데이터 형식)
+  SELECT CAST(AVG(amount) AS NUMBER(3)) AS "평균 구매 개수" FROM buyTBL;
+  ```
+
+- TO_CHAR(숫자, '형식')
+- TO_NUMBER(문자,'형식')
+
+### 조인
+
+두 개 이상의 테이블을 서로 묶어서 하나의 결과 집합으로 만들어 내는 것
+
+- INNER JOIN(내부 조인)
+
+  ```sql
+  SELECT <열 목록>
+  FROM <첫 번째 테이블>
+  	INNER JOIN <두 번째 테이블>
+  	ON <조인될 조건>
+  [WHERE 검색조건]
+  ```
+
+  일반적으로 INNER를 생략하여도 내부조인으로 인식
+
+  ```sql
+  SELECT *
+  	FROM buyTBL
+  		INNER JOIN userTBL
+  		ON buyTBL.userID = userTBL.userID
+      WHERE buyTBL.userID = 'JYP';
+  ```
+
+  JYP가 구매한 물건이 무엇인지 전부 알 수 있는 쿼리
+
+  - 세 개 테이블의 조인
+
+  ```sql
+  SELECT S.stdName, S.addr, C.clubName, C.roomNo
+  	FROM stdTBL S --AS가 생략된 형태 : 별칭
+  		INNER JOIN stdclubRBL SC
+  			ON S.stdName = SC.stdName
+  		INNER JOIN clubTBL C
+  			ON SC.clubName = C.clubName
+      ORDER BY S.stdName;
+  ```
+
+  학생 테이블, 동아리 테이블, 학생동아리 테이블을 이용해서 학생을 기준으로 학생 이름/지역/가입한 동아리/동아리 이름을 출력하는 쿼리
+
+- OUTER JOIN(외부 조인)
+
+  ```sql
+  SELECT <열 목록>
+  FROM <첫 번째 테이블(LEFT테이블)>
+  <LEFT | RIGHT | FULL> OUTER JOIN <두 번째 테이블(RIGHT 테이블)>
+  	ON <조인될 조건>
+  [WHERE 검색 조건];
+  ```
+
+  - LEFT OUTER JOIN
+
+  ```sql
+  SELECT U.userID, U.userName, B.prodName, U.addr, U.mobile1 || U.mobile2 As "연락처"
+  	FROM userTBL U
+  		LEFT OUTER JOIN buyTBL B
+  			ON U.userID = B.userID
+      ORDER BY U.userID;
+   --왼쪽 테이블(userTBL)의 것은 모두 출력되어야 한다.
+  ```
+  
+  - RIGHT OUTER JOIN
+  
+  ```sql
+  SELECT U.userID, U.userName, B.prodName, U.addr, U.mobile1 || U.mobile2 As "연락처"
+  	FROM buyTBL B
+  		RIGHT OUTER JOIN userTBL U
+  			ON U.userID = B.userID
+      ORDER BY U.userID;
+  ```
+  
+  - 구매 기록이 없는 명단 만드는 예제
+  
+  ```sql
+  SELECT U.userID, U.userName, B.prodName, U.addr, U.mobile1 || U.mobile2 As "연락처"
+  	FROM userTBL U
+  		LEFT OUTER JOIN buyTBL B
+  			ON U.userID = B.userID
+      WHERE B.prodName IS NULL
+      --이때, (=)이 아니라 IS를 써주어야 한다.
+      ORDER BY U.userID;
+  ```
+  
+  - NULL은 값이 주어지는 것이 아니라 값이 들어갈 수 있는 상태
+  
+  - FULL OUTER JOIN
+  
+    LEFT와 RIGHT가 합쳐진 것
+  
+  - SELF JOIN
+  
+    자기 자신과 자기 자신이 조인하는 의미
+  
+    ```sql
+    SELECT A.emp AS "부하직원", B.emp AS "직속상관", B.department AS "직속상관부서"
+    	FROM empTBL A
+            INNER JOIN empTBL B
+            	ON A.manager = B.emp
+            WHERE A.emp = '우대리';
+    ```
+  
+    하나의 테이블에 같은 데이터가 존재하되 의미는 다르게 존재하는 경우에는 두 테이블을 서로 SELF JOIN 시켜서 정보를 확인할 수 있다.
+  
+  ### SQL프로그래밍
+  
+  - CASE문
+  
+    ```sql
+    CASE
+    	WHEN (조건) THEN
+    	(실행);
+    	WHEN (조건) THEN
+    	(실행);
+    	ELSE
+    	(실행);
+    END CASE;
+    ```
+  
+  ### 주석
+  
+  ```sql
+  --주석입니다.
+  ```
 
 ## DataBase Modeling
 
