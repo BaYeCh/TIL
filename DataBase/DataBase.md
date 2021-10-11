@@ -1,16 +1,18 @@
 # Data Base
 
-일련의 데이터들을 사용자가 이용할 수 있게끔 가공, 정제하는 과정, 비절차적 언어, 무결성 : 오염되지 않은 데이터들의 집합, 판단의 로직이 아니라 판단의 근거가 되는 데이터를 집어넣은 것
+- 일련의 데이터들을 사용자가 이용할 수 있게끔 가공, 정제하는 과정, 비절차적 언어, 무결성 : 오염되지 않은 데이터들의 집합, 판단의 로직이 아니라 판단의 근거가 되는 데이터를 집어넣은 것
 
-계획된 정보만을 꺼낼 수 있다는 단점을 가짐, 시간이 지남에 따라 정보의 요구도와 중요도가 바뀌어서 유동적인 정보에 취약함
+- 계획된 정보만을 꺼낼 수 있다는 단점을 가짐, 시간이 지남에 따라 정보의 요구도와 중요도가 바뀌어서 유동적인 정보에 취약함
 
--변경하면 되지 않습니까? 변경하기가 힘들다. DB 자체에서는 프로세스를 할 수 없음 수정을하려면 전체를 다시 짜야하는 번거로움이 있음.
-
-빅데이터와 DB는 상호보완적인 관계임
+- -변경하면 되지 않습니까? 변경하기가 힘들다. DB 자체에서는 프로세스를 할 수 없음 수정을하려면 전체를 다시 짜야하는 번거로움이 있음.
+- 빅데이터와 DB는 상호보완적인 관계임
+- 문제해결을 위해 필요한 데이터의 집합 
+- 여러 책들에서 프로젝트의 요구사항들을 확인하면서 테이블의 구성을 공부해가면 좋음
 
 ## DBMS
 
-Data Base Management System
+- Data Base Management System
+
 
 ### History
 
@@ -350,11 +352,45 @@ userID CHAR(8) PRIMARY KEY
 
   값을 입력하지 않았을 때 자동으로 입력되는 기본 값을 정의
 
+  테이블 설정 후 update 구문으로 사용
+
 - NULL
 
   NULL값 허용
 
 파일을 자바에 연결하고 자바에서 sql 쿼리를 만들어서 제공한다. 
+
+default와 null의 구분은 확실히 할 것
+
+ ### 테이블 수정
+
+- ALTER TABLE 문
+
+```sql
+--열의 추가
+ALTER TABLE userTBL
+	ADD homepage VARCHAR(30)
+		DEFAULT '' NULL;
+--열의 삭제
+ALTER TABLE userTBL
+	DROP COLUMN homeAddr;
+```
+
+보통 수정할 경우는 없고, 삭제(DROP) 후 새로 만드는 방법이 주로 쓰임
+
+### 뷰
+
+- 보안에 도움되며, 복잡한 쿼리를 단순화
+- 뷰의 실체는 SELECT문 뿐이며 그 안에 데이터가 없음
+- 구체화된 뷰 : 실제 데이터가 존재하는 뷰
+
+```sql
+create or replace view v_userbuyTBL
+as
+select 
+```
+
+
 
 ### 데이터 형 변환
 
@@ -399,7 +435,7 @@ userID CHAR(8) PRIMARY KEY
   ```sql
   SELECT S.stdName, S.addr, C.clubName, C.roomNo
   	FROM stdTBL S --AS가 생략된 형태 : 별칭
-  		INNER JOIN stdclubRBL SC
+  		INNER JOIN stdclubTBL SC
   			ON S.stdName = SC.stdName
   		INNER JOIN clubTBL C
   			ON SC.clubName = C.clubName

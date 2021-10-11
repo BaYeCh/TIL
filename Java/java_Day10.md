@@ -251,3 +251,38 @@ Collections.sort(sortedList, new ScoreComparator());//(정렬하고자 하는 �
 
 
 
+# Day 15
+
+## Override
+
+- 재정의 ,다형성의 한 종류
+- 상위 클래스에 있는 내용은 그대로 받아오면서 내용만 바꾸어준다.
+- 똑같은 기능임에도 다르게 동작하는 경우를 대비하기 위한 목적
+- access modifier, type, parameter, exception가 다르면 전혀 다른 메소드가 됨
+- Annotation @문자열을 통해서 원하는 규칙에 맞는지 확인
+
+## Overload
+
+- 중복 정의, 다형성의 종류
+
+- 하나의 클래스 안에서 동일한 메소드 이름을 사용할 수 있다.
+
+  1. 메소드 이름이 같아야 함
+  2. 파라메타 리스트를 다르게 함(개수, 타입, 순서)
+
+- 리턴 타입은 오버로드에 영향을 미치지 않음, 고려 대상이 아님
+
+  ```java
+  1. public void a (int a, int b){}
+  2. public void a (int b, int a){}
+  3. public void a (int a, float b){}
+  4. public String a (float a, int b){}
+  5. public String a (int a, int b){}
+  //1과 2는 오버로드가 아님
+  //2와 3은 오버로드
+  //1과 5는 오버로드 아님
+  //1과 4는 오버로드
+  ```
+
+  
+
