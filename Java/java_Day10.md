@@ -13,6 +13,8 @@ list = new ArrayList<ScoreData>();
 ```
 
 - ArrayList의 경우에는 여러 다양한 데이터를 저장할 수 있다.
+- 동일한 타입만 들어가도록 하는 것이 제너릭임
+- 이미 고정된 타입, 동적 타입이 아닌 고정된 타입
 
 ## file 파일
 
@@ -81,25 +83,29 @@ C c = C.getInstance; //Calendar
 
 
 
-Random 
+- Random 
+
 
 ```java
 Random rd = new Random();
 ```
 
-String
+- String
+
 
 ```java
 String sql = "";
 ```
 
-Integer
+- Integer
+
 
 ```java
 int amo = Integer.parseInt(String);
 ```
 
-Connection : 다른 객체에서 여러가지 정보를 조합해서 객체 생성(database : java.sql)
+- Connection : 다른 객체에서 여러가지 정보를 조합해서 객체 생성(database : java.sql)
+
 
 ```java
 public Connection makeConnection(){
@@ -118,7 +124,8 @@ public Connection makeConnection(){
 }
 ```
 
-Statement(database : java.sql) : 다른 인스턴스로부터 만들어짐
+- Statement(database : java.sql) : 다른 인스턴스로부터 만들어짐
+
 
 ```java
 Connection con = this.makeConnection();
@@ -127,7 +134,7 @@ Statement stmt = con.createStatement();
 
 sql로 만든 작업지시를 database로 보내서 결과를 받음
 
-PreparedStatement(database : java.sql)
+- PreparedStatement(database : java.sql)
 
 ```java
 String sql = "INSERT INTO studentTBL VALUES(?,?,?,?)";
@@ -139,7 +146,14 @@ int affectedCount = stmt.executeUpdate();
 
 쿼리 먼저 보내고 쿼리에서 중요하게 여겨지는 값은 나중에 보내는 역할
 
-ResultSet(?)(database : java.sql)
+Statement의 특징에 더해서 매번 바뀌는 값에 대한 대처를 위한 클래스
+
+그냥 Statement를 사용하게 될 경우에는 정보를 삽입할 때 그 개수만큼의 쿼리를 작성해 주어야 함.
+
+잘못된 정보를 삽입하는 것을 방지할 수 있음
+
+- ResultSet(database : java.sql)
+
 
 ```java
 ResultSet rs = stmt.executeQuery();
@@ -167,63 +181,78 @@ con.close();
 
   - 데이터 무결성을
 
-Calendar
+- Calendar
+
 
 ```java
 Calendar cal = Calendar.getInstance();
 ```
 
-Math : 인스턴스를 만들 필요가 없는 클래스
+- Math : 인스턴스를 만들 필요가 없는 클래스
 
-ArrayList
+
+- ArrayList
+
 
 ```java
 ArrayList<String> list = new ArrayList<String>();
 ```
 
-HashMap(?)
+- HashMap(?)
+
 
 ```java
 Map<String, Integer> map = new HashMap<K, V>();
 ```
 
-HashSet(?)
+- HashSet(?)
 
-Object 객체 생성 하지 않음(equals와 toString : java.lang)
 
-SimpleDateFormat
+- Object 객체 생성 하지 않음(equals와 toString : java.lang)
 
-Thread
 
-File
+- SimpleDateFormat
+
+
+- Thread
+
+
+- File
+
 
 ```java
 File file = new File("./data/Abc1115.csv");
 ```
 
-Filereader
+- Filereader
+
 
 ```java
 FileReader fr = new FileReader(file);
 ```
 
-BufferedReader
+- BufferedReader
+
 
 ```jav
 BufferedReader br = new BufferedReader(fr);
 ```
 
-FileWriter : new
+- FileWriter : new
 
-PrintWriter : new
 
-Scanner
+- PrintWriter : new
+
+
+- Scanner
+
 
 ```java
 Scanner scan = new Scanner();
 ```
 
-Comparator
+- Comparator
+
 
 ```java
 public class ScoreComparator implements Comparator<ScoreData> {

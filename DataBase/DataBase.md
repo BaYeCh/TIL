@@ -506,27 +506,27 @@ select
     ```
   
     하나의 테이블에 같은 데이터가 존재하되 의미는 다르게 존재하는 경우에는 두 테이블을 서로 SELF JOIN 시켜서 정보를 확인할 수 있다.
-  
-  ### SQL프로그래밍
-  
-  - CASE문
-  
-    ```sql
-    CASE
-    	WHEN (조건) THEN
-    	(실행);
-    	WHEN (조건) THEN
-    	(실행);
-    	ELSE
-    	(실행);
-    END CASE;
-    ```
-  
-  ### 주석
-  
+
+### SQL프로그래밍
+
+- CASE문
+
   ```sql
-  --주석입니다.
+  CASE
+  	WHEN (조건) THEN
+  	(실행);
+  	WHEN (조건) THEN
+  	(실행);
+  	ELSE
+  	(실행);
+  END CASE;
   ```
+
+### 주석
+
+```sql
+--주석입니다.
+```
 
 ## DataBase Modeling
 
