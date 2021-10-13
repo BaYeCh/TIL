@@ -203,6 +203,28 @@ ArrayList<String> list = new ArrayList<String>();
 
 ```java
 Map<String, Integer> map = new HashMap<K, V>();
+//key&value 저장
+//autoboxing으로 단순히 숫자를 적는다 하더라도 정수형으로 바꾸어 해석함
+map.put("one", new Integer(1));
+//취소선이 그어짐 : 하는 일이 변함없이 동일하기 때문에 인스턴스할 필요가 없음
+map.put("one", Integer.valueOf(1));//인스턴스하지 않은 형태
+map.put("one", 1);
+//수정
+map.put("one", 40);
+//같은 이름에 다른 수를 넣는 것으로 수정이 가능함
+//삭제
+map.remove("one");//one이름을 가진 요소가 삭제됨
+//맵에서 전체 조회
+Set<String> keys = map.keySet();//Set의 특징: 순서 없고, 중복을 허락하지 않음
+Iterator<String> iter = keys.iterator();
+//순서에 상관없이 존재하는 것을 꺼내주는 역할
+while(iter.hasNext()){
+    String key = iter.next();
+    Integer value = map.get(key);
+    System.out.println(key+":"+value);
+}
+
+
 ```
 
 - HashSet(?)
