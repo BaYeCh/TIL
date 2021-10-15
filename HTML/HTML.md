@@ -62,9 +62,9 @@
 
 
 
-http://localhost:9090/BasicWeb/day16/welcome.html
+http:(프로토콜)//localhost:9090(포트번호)/BasicWeb/day16/welcome.html(파일이 존재하는 주소)
 
-http : 프로토콜
+
 
 - 톰캣의 포트번호가 이미 다른 곳에서 쓰이고 있다는 에러 창
 
@@ -146,3 +146,5 @@ http : 프로토콜
   ```
 
 - 현재는 div와 시맨틱을 혼용해서 쓰고 있음
+
+## 
