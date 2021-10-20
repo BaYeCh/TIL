@@ -96,6 +96,48 @@ public class MemberController extends HttpServlet {
 - 관리가 어렵고 다수의 에러 발생으로 최근에는 사용이 줄어드는 추세
 - instance를 만들어서 관리하는 것은 컨테이너가 함
 
+# Day22
+
+- Servlet : Controller
+
+  자기 책임성의 원칙에 따라 하는 일을 분리했다.
+
+1. Server
+2. Business
+3. DAO(Data Access Object)
+4. Connection
+
+- VO(Value Object) = DTO(Data Transfer Object) = DataBean
+
+1. VIEW Client(html)
+   1. in
+   2. out
+2. SERVER Controller WAS(java)
+   1. Servlet
+      1. Business
+      2. DB(crud)
+      3. Connection
+3. MODEL DB(sql)
+4. VO(Value Object)
+
+- 하나의 서블릿에 여러 개의 작업을 처리하기 위해서 작업처리 cmd를 QueryString 방법을 이용하여 전ㄷ라함
+
+  ```java
+  http:/localhost:9090/BasicWeb/member/CmdController?key=value
+  ```
+
+- list의 경우 다른 페이지에 접근하는 것이 아니라 url을 통해 바로 접근했음
+
+## QueryString
+
+- MVC방식 이전에 Model2라 불림
+- Servlet의 유무에 따라 Model1과 Model2로 나뉨
+- CmdController라는 서블릿을 중복해서 처리할 수는 없기 때문에
+- get방식으로 보내는 것을 QueryString이라고 한다.
+- url을 ``CmdController?key=value``의 형태
+- 의사표시가 가능 : 작업지시 커맨드를 보내는 것
+- 하나의 서블릿에 여러 개의 지시가 가능하게 됨
+
 # Error
 
 - ![리소스를찾을수없는에러](md-images/untitle.png/%EB%A6%AC%EC%86%8C%EC%8A%A4%EB%A5%BC%EC%B0%BE%EC%9D%84%EC%88%98%EC%97%86%EB%8A%94%EC%97%90%EB%9F%AC.JPG)
@@ -105,3 +147,7 @@ public class MemberController extends HttpServlet {
 - ![저장후서버에reload](md-images/untitle.png/%EC%A0%80%EC%9E%A5%ED%9B%84%EC%84%9C%EB%B2%84%EC%97%90reload.JPG)
 
 서블릿에서는 저장 후에 서버에 re-load하는 과정을 거침
+
+- ![listisnullerror](md-images/untitle.png/listisnullerror.JPG)
+
+ Query String 오류, 먼저 리퀘스트를 받고 리스폰스를 하는 과정이 들어가야 하는것이지 곧바로 결과를 도출하려다 나오는 에러, 브라우저에 http://localhost:9090/MVCBasic/CmdController?cmd=list를 통해 멤버 리스트를 호출하는 것!
