@@ -7,7 +7,7 @@
 - 서버를 이용하기 위해서는 기본적으로 서비스 상태여야만 이용할 수 있다
 - 눈에 보이는 것이 중심! 
 
-![웹어플리케이션 구조](md-images/untitle.png/%EC%9B%B9%EC%96%B4%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98%20%EA%B5%AC%EC%A1%B0.png)
+![웹 어플리케이션의 기능 기본 연결도](md-images/untitle.png/%EC%9B%B9%20%EC%96%B4%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98%EC%9D%98%20%EA%B8%B0%EB%8A%A5%20%EA%B8%B0%EB%B3%B8%20%EC%97%B0%EA%B2%B0%EB%8F%84.JPG)
 
 - M(DB: model)V(Client: view)C(Middleware: controller) 17장
 

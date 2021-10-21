@@ -138,6 +138,24 @@ public class MemberController extends HttpServlet {
 - 의사표시가 가능 : 작업지시 커맨드를 보내는 것
 - 하나의 서블릿에 여러 개의 지시가 가능하게 됨
 
+# Day23
+
+- 애자일 방법론
+
+- 삭제 작업
+
+- DAO와 Service의 차이
+  - 자바에서 실질적으로 비즈니스 로직을 사용하기 위해 필요한 데이터는 데이터베이스에서 DAO를 통해 가져오게 됨
+  - 복잡한 데이터 처리의 경우 Service에서 감당한다
+- RequsetDispatcher 
+  - 두 세 페이지인 경우에 사용함
+- Session
+  - 여러 페이지를 오랜 시간동안 사용할 때 사용함
+- ConnectionPool
+  - 대여와 반납의 개념
+
+
+
 # Error
 
 - ![리소스를찾을수없는에러](md-images/untitle.png/%EB%A6%AC%EC%86%8C%EC%8A%A4%EB%A5%BC%EC%B0%BE%EC%9D%84%EC%88%98%EC%97%86%EB%8A%94%EC%97%90%EB%9F%AC.JPG)
