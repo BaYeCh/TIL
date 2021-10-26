@@ -154,13 +154,201 @@ public class MemberController extends HttpServlet {
 - ConnectionPool
   - 대여와 반납의 개념
 
+# Day24
 
+- forward방식과 sendRedirect방식
+  - 현재 위치와 시작위치의 차이
+  - forward는 데이터도 같이 보내지만 sendRedirect는 이동만 데이터는 session이
+- RequestDispatcher와 Session(자바 웹을 다루는 기술 12장 440p참고)
+  - 한 번 쓰고 말 것이라면 RequestDispatcher가 훨씬 경제적
+  - 여러 페이지를 연결시켜줌
+  - 처음의 페이지를 이후 두 세 페이지까지 연결함
+  - 웹 사이의 데이터를 공유하기 위한 방법
+  - session은 일정 시간을 두고 그 시간안에 이루어진 모든 작업들을 저장함
+  - 기간은 로그인 부터 로그 아웃까지
+
+# Day25
+
+- JSTL(Java Standard Tag Library)
+
+  ```jsp
+  <c:choose>
+  <!-- jstl-->
+  </c:choose>
+  ```
+  view, node.js등에서 활용됨
+
+  ```jsp
+  <c:choose>
+      <c:when test="${ empty membersList}" >
+        <tr>
+          <td colspan="5" align="center">
+            <b>등록된 회원이 없습니다.</b>
+         </td>  
+        </tr>
+     </c:when>  
+     <c:when test="${!empty membersList}" >
+        <c:forEach  var="mem" items="${membersList }" >
+        <!-- for(MemberVO mem : memberList) -->
+          <tr align="center">
+            <td>${mem.id }</td>
+            <td>${mem.pwd }</td>
+            <td>${mem.name}</td>     
+            <td>${mem.email }</td>     
+            <td>${mem.joinDate}</td>     
+         </tr>
+       </c:forEach>
+  </c:when>
+  </c:choose>
+  ```
+
+# Day 26
+
+- 바인딩(맵 방식key:value)
+
+  - 서블릿에서 다른 서블릿 또는 JSP로 대량의 데이터를 공유하거나 전달하고 싶을 때
+
+  - Get방식으로 데이터를 전달할 수 있으나 대량의 상품 정보를 보내게 되는 경우 보안 문제로 인해 불편함이 생김
+
+  - redirect 방식
+
+    첫 번째 서블릿
+
+    ```java
+    @WebServlet("/first")
+    request.setAttribute("address", "서울시 성북구");
+    //웹 브라우저에서 요청한 request객체에 address의 값으로 "서울시 성북구"를 바인딩
+    response.sendRedirect("second");
+    //두 번째 서블릿으로 전달하기 위해 sendRedirect()를 호출
+    ```
+
+    두 번째 서블릿
+
+    ```java
+    @WebServlet("/second")
+    String address =(String)request.getAttribute("address");
+    //전달된 request에서 getAttribute()를 이용해 address를 가져옴
+    결과 :  null 출력
+    ```
+
+    redirect방식으로는 서블릿에서 바인딩한 데이터를 다른 서블릿으로 전송할 수 없음
+
+  - disptch포워딩
+
+    첫 번째 서블릿
+
+    ```java
+    @WebServlet("/first")
+    request.setAttribute("address", "서울시 성북구");
+    //웹 브라우저에서 요청한 request객체에 address의 값으로 "서울시 성북구"를 바인딩
+    ResquestDispatcher dispatch = request.getRequestDistpatcher("second");
+    dispatch.forward(request, response);
+    //바인딩된 request를 다시 두 번째 서블릿으로 포워드
+    ```
+
+    두 번째 서블릿
+
+    ```java
+    @WebServlet("/second")
+    String address =(String)request.getAttribute("address");
+    //전달된 request에서 getAttribute()를 이용해 address를 가져옴
+    결과 :  '서울시 성북구' 출력
+    ```
+
+    첫 번째 서블릿에서 두 번째 서블릿으로 전달되는 request가 브라우저를 거치지 않고 바로 전달되었다. 따라서 첫 번째 서블릿의 request에 바인딩된 데이터가 그대로 전달됨
+
+  - ServletContext
+
+    - 서블릿의 실행환경에 대한 정보
+
+# 기본 사항
+
+1. MVC프로젝트를 생성할 수 있어야 한다.
+
+2. 프로젝트 환경설정을 할 수 있어야 한다.(web.xml server.xml)
+
+3. 클라이언트 소스 및 파일의 위치를 결정하고 접근할 수 있어야 한다.
+
+4. 리소스 파일(이미지, css, JS, XML, 기타), 자바 코드, JSP/HTML 코드를 구분하여 저장할 수 있어야 한다.
+
+5. MVC구조를 이용하여 Login을 실행하고 결과를 출력한다. --> 과제 내용
+
+   - 페이지 이동 방식
+
+   - ajax 이동 방식
+
+6. MVC에 관련된 3군데의 네트워크를 연결하는 방법을 알고 있어야 한다.
+
+   - 페이지 연결
+   - 자바클래스 연결
+   - 데이터베이스 연결
+
+7. 요청/응답 처리, 비즈니스 로직처리, 데이터베이스 연결처리를 할 수 있어야 한다.
+
+8. 위의 모든 것은 클라이언트의 요구사항에 대응해야 한다.
+
+# MVC 정리
+
+![MVC](md-images/untitle.png/MVC.PNG)
+
+- 페이지의 연결은 어떻게 할 것인가?
+  - 요청 : 1. 주소 2. ``<a>``태그 3. form태그  : url을 어떻게 보낼 것인가?
+  - 응답 : sendRedirect, forward = url을 어떻게  보낼 것인가?
+- 컨트롤러에 작업요청은 어떻게 할 것인가? = URL
+  - 작업의 종류를 보낸다 : QueryString, 다르게 식별되는 페이지명
+- 작업처리 결과(데이터)를 어떻게 클라이언트에게 전달할 것인가?
+  - 요청 객체 또는 세션 객체 또는 어플리케이션 객체에 저장해서
+- 컨트롤러, 서비스, DAO는 어떻게 구별하는가?
+  - 컨트롤러 : 클라이언트로부터의 요청과 데이터를 받고 처리 결과를 전송
+  - 서비스 : 컨트롤러에게 받은 데이터와 DAO에게서 받은 데이터를 가지고 비지니스 로직처리하여 컨트롤러에게 결과를 전달
+  - DAO : 데이터베이스에 연결하여 필요한 데이터를 가져와서 컨트롤러에게 전달
+- 데이터클래스의 용법은 무엇인가?
+  - 서로 관련있는 데이터를 하나로 묶는 역할
+  - 각 단계로 한 세트의 데이터를 묶어서 전달
+- 클라이언트의 역할에서 INPUT과 OUTPUT의 차이점은 무엇인가?
+  - INPUT : 작업지시의 시작
+  - OUTPUT : 작업지시의 결과(또 다른 작업지시의 시작이 될 수 있음)
+- 서버로 이동 없이 데이터 처리 (서버사이드작업)를 할 수 없을까?
+  - 자바스크립트의 XMLHttpRequest객체를 통해서 Ajax 라이브러리 사용(jQuery)
+- 클라이언트에서 데이터를 수집하는 방법은 어떤 것이 있는가?
+  - Form데이터 또는 QueryString
+- DB에 CRUD쿼리를 어떻게 전달하고 결과를 받을 수 있는가?
+  - JDBC를 통해서
+  - Connection - Statement - ResultSet
+
+## jQuery
+
+- Ajax(Asynchronous Javascript + XML) 자바 웹을 다루는 기술 16장 638p
+
+  - 페이지의 이동 없이 데이터 처리가 가능
+  - 클라이언트와 서버 간의  XML이나 JSON 데이터를 주고 받는 기술
+  - ID중복 여부 확인
+  - Ajax의 기본 형태
+
+  ```javascript
+  $.ajax({
+      type: "post"또는 "get",//데이터 형식
+      async:"true" or "false"
+      url : "요청할 url",
+      data : {서버로 전송할 데이터},//key&value방식,맵방식
+      datatype: "서버에서 전송받을 데이터 형식",
+      success:function(){
+      //정상 요청, 응답 시 처리
+  	}
+  	error : function(){//오류 발생 시 처리}
+      complete : function(){//작업 완료후 처리} 
+  });
+  ```
+
+- 
 
 # Error
 
 - ![리소스를찾을수없는에러](md-images/untitle.png/%EB%A6%AC%EC%86%8C%EC%8A%A4%EB%A5%BC%EC%B0%BE%EC%9D%84%EC%88%98%EC%97%86%EB%8A%94%EC%97%90%EB%9F%AC.JPG)
 
 리소스를 찾을 수 없다는 에러, 이름이 잘못되었거나 철자가 틀린경우 자주 발생
+
+
 
 - ![저장후서버에reload](md-images/untitle.png/%EC%A0%80%EC%9E%A5%ED%9B%84%EC%84%9C%EB%B2%84%EC%97%90reload.JPG)
 
@@ -169,3 +357,12 @@ public class MemberController extends HttpServlet {
 - ![listisnullerror](md-images/untitle.png/listisnullerror.JPG)
 
  Query String 오류, 먼저 리퀘스트를 받고 리스폰스를 하는 과정이 들어가야 하는것이지 곧바로 결과를 도출하려다 나오는 에러, 브라우저에 http://localhost:9090/MVCBasic/CmdController?cmd=list를 통해 멤버 리스트를 호출하는 것!
+
+- [tomcat](http://tomcat.apache.org/tomcat-9.0-doc/jndi-resources-howto.html)
+- ![pro17classpathx표시](md-images/untitle.png/pro17classpathx%ED%91%9C%EC%8B%9C.JPG)
+
+클래스패스에 서블릿 에러  프로젝트의 설정에 들어가서 Java Build Path의 Libraries에서 Add Library... 클릭 Web App Libraries추가 혹은 Server Runtime 추가 그리고 에러난 servlet-api.jar을 Remove
+
+- ![sql무결성에러](md-images/untitle.png/sql%EB%AC%B4%EA%B2%B0%EC%84%B1%EC%97%90%EB%9F%AC.JPG)
+
+이미 Primary Key를 중복 사용 시 나오는 무결성 에러
