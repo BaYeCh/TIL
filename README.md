@@ -8,5 +8,9 @@
 
 ## [HTML](https://github.com/BaYeCh/TIL/tree/master/HTML)
 
+## [Servlet](https://github.com/BaYeCh/TIL/tree/master/Servlet)
+
+## [Spring](https://github.com/BaYeCh/TIL/tree/master/Spring)
+
 ## Reference
 
