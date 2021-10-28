@@ -68,27 +68,104 @@
 
 - [Spring Framework 동작원리](https://juyoungit.tistory.com/268)
 
+### Spring JDBC 연동
+
+- Driver이름과 DB의 url정보가 필요함 jdbc.properties에 저장해 놓을 것임
+
+  ```properties
+  jdbc.driverClassName=oracle.jdbc.driver.OracleDriver
+  jdbc.url=jdbc:oracle:thin:@localhost:1521:XE
+  jdbc.username=scott
+  jdbc.password=tiger
+  key&value 방식, 가장 전형적임
+  ```
+
+- Jdbc Template
+
+  조금 더 간략한 형태의 스프링의 JDBC기능을 제공하는 클래스
+
+  이것보다 더 간략해지는 형태가 나옴
+
+- RowMapper
+
+  anonymous inner class
+
+### ORM
+
+- 마이바티스 프레임워크
+
+  - SQL문의 가독성을 높여 사용하기 편하게 만든 것
+  - SQL문을 미리 SqlMapConfig.xml에 작성해 놓고 애플리케이션에서 데이터베이스 연동 시 해당 SQL문에서 사용될 데이터를 지원하는 해당 매개변수에 저장한 후 SQL문에 전달
+
+  ```xml
+  <resultMap id="memResult" type="memberVO">
+  		<result property="id" column="id" />
+          <result property="pwd" column="pwd" />
+          <result property="name" column="name" />
+          <result property="email" column="email" />
+          <result property="joinDate" column="joinDate" />
+  	</resultMap> 
+  <--! 컬렉션과 유사-->
+  ```
+
+  - DB에서의 Session
+
+    - Connection 부터 close까지 그 사이의 작업
+
+    ```java
+    SqlSession session = sqlMapper.openSession();
+    //openSession을 하는 즉시 Connection된다.
+    ```
+
+    
+
 # Q&A
 
 1. 컨테이너란?
 
    - 자기 실행 환경, 서블릿 실행 환경
    - 톰캣 : 서블릿의 생성, 초기화, 서비스 실행, 소멸에 관한 모든 권한을 가지고 서블릿을 관리
-
 2. 페이지는 무엇인가?
 
    - 정보를 제공해주는 역할, 후에 프로세스를 처리해주는 역할까지 확장, servlet이 이 역할을 맡게 됨
-
 3. 빈(bean)이란?
 
    - 오브젝트, 인스턴스 객체
-
 4. url 분석
 
    - ``https://us02web.zoom.us/postattendee?mn=1osXnULwF-l8SkxYDBYzwdQ1X4sLlUk_oy4c.5bTyFkjbE08tsg5R&id=1``
-
    - http 프로토콜,  s 시큐리티
    - us02web.zoom.us 도메인
    - postattendee 페이지
    - ?mn=1osXnUL~ 쿼리 스트링 key&value방식
+5. 스프링이란?
+   - MVC모델을 자동화 한 것
+6. 프로젝트 구조란?
+   - 환경 설정을 의미, 각종 파일이 어디에 위치하는지에 유의
+7. 22장에서는 ConnectionManager가 존재하지 않는 이유?
+   - Spring에서는 컨테이너가 ConnectionManager의 역할을 함
+8. 스프링의 두 가지 기능
+   - DI 와 IoC
+   - 데이터를 외부에서 공급하고, 데이터를 처리하는 클래스도 외부에서 공급함
+9. 824p의 제대로 처리해 주지 않으면의 의미는?
+   - Close가 되지 않은 것을 의미
+10. 마이바티스나 하이버네이트 같은 데이터베이스 연동관련 프레임워크 : ORM FrameWork
+11. ``<bean>``태그를 모두 작성하려 하기 보다 그 안의 ``<prop key>``값과 ``<property>`` 설정에 더 집중할 것
+12. 현재 프로그램의 특징
+    - 요구사항의 변경이 심해 언제든지 코딩의 변화가 필요함
+    - 따라서 DI와 IoC와 같은 기술을 가진 스프링이 필요한 것, 고정 제거
+13. 스프링의 목적
+    - 쉽게 기업형 프로그램(반제품을 통해)을 만들기 위해
+14. 
 
+
+
+# Error
+
+- 프로젝트 임포트 시 에러 multi method error 
+
+  Build Path를 들어가서 문제의 파일 클릭 후 Edit 클릭 후 Workspace default JRE로 변경
+
+- ![mysql라이브러리에러](md-images/untitle.png/mysql%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC%EC%97%90%EB%9F%AC.JPG)
+
+com.mysql.cj.jdbc.Driver에서는 3.0버전을 호환하지 않음 따라서 8.0 버전을 카피해서 해결
