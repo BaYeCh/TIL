@@ -92,6 +92,8 @@
 
 ### ORM
 
+- Object Relational Mapping
+
 - 마이바티스 프레임워크
 
   - SQL문의 가독성을 높여 사용하기 편하게 만든 것
@@ -117,7 +119,53 @@
     //openSession을 하는 즉시 Connection된다.
     ```
 
-  - 
+
+# Day28
+
+- XML parser
+
+  ```xml
+  <select id="selectAllMemberList" resultMap="memResult">
+      <!-- xml parser 구문-->
+        <![CDATA[
+           select * from t_member	order by joinDate desc	 	
+        ]]>
+  	</select>
+  ```
+
+### Spring Annotation
+
+- 자동화
+
+- 여러 가지 스테레오 타입 애너테이션
+
+  ```java
+  @Controller("mainController")
+  //컨트롤러 빈
+  @RequestMapping("/test")
+  public class MainController {
+     @RequestMapping(value="/main1.do" ,method=RequestMethod.GET)
+     public ModelAndView main1(HttpServletRequest request, HttpServletResponse response)  throws Exception{
+        ModelAndView mav=new ModelAndView();
+        mav.addObject("msg","main1");
+        mav.setViewName("main");
+        return mav;
+     }
+  ```
+
+  ``<component-scan>``태그에 의해 지정한 클래스를 ``@Controller`` : 컨트롤러 빈, ``@service`` : 서비스 빈, ``@Repository`` : DAO 빈, ``@Component`` : 빈 으로 자동 변환
+
+- ``<component-scan>``태그
+
+  ```xml
+  <context:component-scan base-package="com.spring"/>
+  ```
+
+- ``@Autowired``
+
+  별도의 setter나 생성자 없이 속성에 빈을 주입할 수 있음
+
+  ```
 
 # Q&A
 
@@ -156,7 +204,16 @@
     - 따라서 DI와 IoC와 같은 기술을 가진 스프링이 필요한 것, 고정 제거
 13. 스프링의 목적
     - 쉽게 기업형 프로그램(반제품을 통해)을 만들기 위해
-14. 
+14. Dependency Injection이란?
+    - 작업절차 진행 시 자기책임성의 원칙에 따라서 데이터에 의존할 수 밖에 없음
+    - 한 클래스가 필요로 하는 데이터를 생성자나 set메소드를 통해서 공급받는데 그 타입이 클래스타입이다.
+    - 기존과 무엇이 다른가? 개발자가 직접 작성하는 것이 아니라 필요한 시점에 <u>외부에서 컨테이너가 자동(IoC)</u>으로 Injection해줌
+15. Servlet : server applet
+16. 마이바티스(ORM)의 역할
+    - JDBC의 역할, 커넥션관리(Connection pooling), action태그를 이용해서 태그 안의 정보로 <u>외부에서</u> 작업지시가 이루어짐
+17. 다형성이란?
+    - 상위 클래스의 타입을 가진 변수에 하위클래스를 인스턴스할 수 있다.
+    - 자바 언어의 특징
 
 
 
@@ -168,4 +225,20 @@
 
 - ![mysql라이브러리에러](md-images/untitle.png/mysql%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC%EC%97%90%EB%9F%AC.JPG)
 
-com.mysql.cj.jdbc.Driver에서는 3.0버전을 호환하지 않음 따라서 8.0 버전을 카피해서 해결
+com.mysql.cj.jdbc.Driver에서는 3.0버전을 호환하지 않음 따라서 8.0 버전을 카피해서 해결, 위의 에러는 철자도 다름
+
+- ![빈생성오류](md-images/untitle.png/%EB%B9%88%EC%83%9D%EC%84%B1%EC%98%A4%EB%A5%98.JPG)
+
+브라우저에서는 서블릿이 호출이 되지 않았으며, 콘솔상으로는 빈이 생성되지 않았다는 오류
+
+해결방법
+
+```xml
+<listener>
+      <listener-class>
+         org.springframework.web.context.ContextLoaderListener
+     </listener-class>
+   </listener>
+```
+
+ContextLoaderListener를 추가하여 실행하여 확인한다
