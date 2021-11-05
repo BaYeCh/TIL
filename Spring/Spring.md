@@ -166,6 +166,32 @@
   별도의 setter나 생성자 없이 속성에 빈을 주입할 수 있음
 
   ```
+  ```
+
+# Maven
+
+- 4차 산업에서 핵심 : 반도체
+- POM(Project Object Model)
+  - Object - ``<>``태그들
+- WEB-INF의 폴더 안에 JSP를 넣는다
+  - 외부에서 들어오는 방법이 없으며, 보안의 가장 기본적인 방법
+  - Controller를 통해서만 들어와야 함
+- 기준 소스파일구조를 따를 것(자바 웹을 다루는 기술 967p)
+- xml을 이용하여 환경설정
+- 동작하지 않을 시 가장 먼저 체크해야 할 항목이 환경설정
+- 프로그램 동작에 필요한 파일들이 서로 연결되어 있는지 확인을 하는 것이 중요
+- 환경설정 시에 어느 정도 시간이 소요 되므로 조금 기다리거나 재부팅을 해볼 것
+- pom.xml의 역할
+  - 프로젝트를 정의하고, 프로젝트에 필요한 jar파일들을 관리(dependency)
+  - 라이브러리를 수급해 코딩하기위한 준비 작업
+- [pom.xml관련 dependency](https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload)
+- pom을 통해서 해당되는 태그 입력 시 필요한 jar을 받아오게 됨
+
+
+
+- LoginMVC를 스프링의 최종 버전으로 바꾸기 위한 방법
+  - pom.xml을 이용한 jar 업로드
+  - WEB-INF로 jsp파일 및 여러 설정 파일(action-mybatis등)을 변경
 
 # Q&A
 
@@ -242,3 +268,41 @@ com.mysql.cj.jdbc.Driver에서는 3.0버전을 호환하지 않음 따라서 8.0
 ```
 
 ContextLoaderListener를 추가하여 실행하여 확인한다
+
+- 500 MySQL Connection 에러
+
+  1. pom.xml에서 8.0버전을 업로드 하는 방법
+  2. 5버전에서 존재하는 것만을 사용 com.mysql.jdbc.Driver
+
+- ![한글이 안나오는 경우](md-images/untitle.png/%ED%95%9C%EA%B8%80%EC%9D%B4%20%EC%95%88%EB%82%98%EC%98%A4%EB%8A%94%20%EA%B2%BD%EC%9A%B0.JPG)
+
+  보통 입력 부분, DB 입력 부분, 출력부분으로 총 3부분에서 에러가 남 그래서 DB에 들어가는 데이터를 확인 하고 정상적으로 나온다면 출력부분이 데이터가 정상적이지 않다면 입력부분에서 문제가 생긴다는 것을 확인할 수 있음
+
+  해결 : web.xml을 변경하는 것으로 할 수 있음
+
+  ```xml
+  <filter>
+  		<filter-name>encodingFilter</filter-name>
+  		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+  		<init-param>
+  			<param-name>encoding</param-name>
+  			<param-value>UTF-8</param-value>
+  		</init-param>
+  	</filter>
+  	<filter-mapping>
+  		<filter-name>encodingFilter</filter-name>
+  		<url-pattern>/*</url-pattern>
+  	</filter-mapping> 
+  ```
+
+  - ![입력부분은정상이지만출력에서문제가발생](md-images/untitle.png/%EC%9E%85%EB%A0%A5%EB%B6%80%EB%B6%84%EC%9D%80%EC%A0%95%EC%83%81%EC%9D%B4%EC%A7%80%EB%A7%8C%EC%B6%9C%EB%A0%A5%EC%97%90%EC%84%9C%EB%AC%B8%EC%A0%9C%EA%B0%80%EB%B0%9C%EC%83%9D-16360909671311.JPG)
+
+  DB에서 저장이 올바르지 못한 것으로 확인
+
+- ![properties를수정](md-images/untitle.png/properties%EB%A5%BC%EC%88%98%EC%A0%95.JPG)
+
+  properties를 수정하여서 url을 불러 올 때 characterEncoding으로 바꾸어주는 것을 추가
+
+  ![디버깅후결과](md-images/untitle.png/%EB%94%94%EB%B2%84%EA%B9%85%ED%9B%84%EA%B2%B0%EA%B3%BC.JPG)
+
+디버깅 시에 어디에서 에러가 발생하는지를 위치를 추리고 그 장소에서 출력을 통해 확인한다.
