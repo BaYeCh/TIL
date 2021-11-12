@@ -212,18 +212,147 @@
   - 마이바티스의 modelConfig.xml에 적용되는 VO의 패키지명을 정확히 입력한다.(복붙 시 패키지명이 달라짐)
   - 파일 이미지에 S가 나와있으면 스프링이 적용되고 있음을 의미
 
+# Day31
+
+- 프로젝트 기획
+
+- 웹 어플리케이션
+
+  - 불편한 것을 개선하기 위한 아이디어로부터 출발
+  - 앱은 개인적, 타겟팅을 줄일 수 있을 만큼 줄여서 만듦
+
+- 게시판을 제작(게시글 및 댓글 관리, 페이징)
+
+- 요구사항 분석
+
+  - 현재 시스템을 수정하거나, 보완하거나, 대체하는 프로그램
+  - 신규 시스템
+
+- 시스템 인터페이스 현황 및 작성 예시 중요!([NCS/학습모듈검색](https://ncs.go.kr/unity/th03/ncsSearchMain.do),NCS 요구사항 확인PDF, 9page)
+
+- 결과 보고서 작성 시 이슈, 문제(과정 중 결함, 힘든 사항)의 처리 과정에 대한 상세한 기록
+
+- 모듈, 계획
+
+- LoginSpring with Ajax
+
+  ```java
+  @ResponseBody
+  	@RequestMapping(value = "/login_check", method = RequestMethod.POST)
+  	public void check(@RequestParam("user_id") String id,
+  								@RequestParam("user_pwd") String pwd,
+  								//Ajax내에서 id를 맞춰주어야 함
+  		                       HttpServletRequest request, HttpServletResponse response) throws Exception {
+  		//System.out.println("check2");
+  		boolean flag = loginService.checkLogin(id, pwd);
+  		//Ajax를 위해서 ResponseBody 어노테이션을 가져와야 함
+          //스트림을 만들어준 형태
+  		response.getWriter().print(flag);	
+  	}
+  ```
+
+- VisualBasic 은 Form베이스로 GUI를 이용해 드래그엔 드롭방식을 채용했음
+
+- 빠르게 뉴런의 회로를 만드는 방법 : 기본을 무한정으로 반복하는 것으로 생성
+
+- 자바스크립트에서 컨트롤러를 연결하면 컨트롤러가 메소드를 호출
+
+- rest기본방식을 이용하다가 Spring Boot에서 또 다른 방법으로 이용하게 됨
+
+# Day32
+
+- 사람이 아날로그로 하던 때보다 빨라졌느냐?
+- 요구사항 확인
+  - 만들어진 요구사항에 대한 정확한 이해
+- 프로젝트를 완료한 뒤(완전히 실행되는 것을 말함)에 개선을 하는 방향으로 함
+- 요구사항 정의서 제작 시 정확하고 구체적으로 기술하기
+- 요구사항 검토 내용에 따라 검증할 것 (처음이기 때문에 품질에 너무 연연하지 말 것)
+- 프로젝트 기획내용 논의하고 문서까지 작성해서 2시30분까지 실습하겠습니다.
+
+## Rest
+
+- **``@RestController``**
+
+  - 원래라면 writer.print 등으로 스트림을 만들어서 보내야 하지만 Controller를 사용하게 되면 스트림을 만들지 않아도 됨
+
+- **``JSON``**표기법
+
+  ```java
+  {"key":"value","key2":"value2"}
+  //맵방식
+  ```
+
+- ```java
+  @RequestMapping("/membersMap")
+    public Map<Integer, MemberVO> membersMap() {
+      Map<Integer, MemberVO> map = new HashMap<Integer, MemberVO>();
+      //Map방식은 key&value방식으로 앞의 키가 0이 붙고나서 다음의 밸류가 나오는 방식이 나옴
+      for (int i = 0; i < 10; i++) {
+        MemberVO vo = new MemberVO();
+        vo.setId("hong" + i);
+        vo.setPwd("123"+i);
+        vo.setName("홍길동" + i);
+        vo.setEmail("hong"+i+"@test.com");
+        map.put(i, vo); 
+      }
+      return map; 
+    } 
+  //결과
+  {"0":{"id":"hong0","pwd":"1230","name":"홍길동0","email":"hong0@test.com"},"1":{"id":"hong1","pwd":"1231","name":"홍길동1","email":"hong1@test.com"},"2":{"id":"hong2","pwd":"1232","name":"홍길동2","email":"hong2@test.com"},"3":{"id":"hong3","pwd":"1233","name":"홍길동3","email":"hong3@test.com"},"4":{"id":"hong4","pwd":"1234","name":"홍길동4","email":"hong4@test.com"},"5":{"id":"hong5","pwd":"1235","name":"홍길동5","email":"hong5@test.com"},"6":{"id":"hong6","pwd":"1236","name":"홍길동6","email":"hong6@test.com"},"7":{"id":"hong7","pwd":"1237","name":"홍길동7","email":"hong7@test.com"},"8":{"id":"hong8","pwd":"1238","name":"홍길동8","email":"hong8@test.com"},"9":{"id":"hong9","pwd":"1239","name":"홍길동9","email":"hong9@test.com"}}
+  //json도 키&밸류 방식을 취하기 때문에 키&(키&밸류)의 양식을 띔
+  ```
+
+- ```jsp
+  JSONTest.jsp
+  <!-- 네트워크를 통해서 버전을 참조 -->
+  <script src="http://code.jquery.com/jquery-latest.js"></script> 
+  ```
+
+- ```jsp
+  $.ajax({
+          type:"post",
+          url:"${contextPath}/test/info",
+          contentType: "application/json",
+          //객체를 보내게 되면 자바쪽에서 받지를 못함 따라서 String으로 변환해주어서 네트워크를 통해서 보냄
+          data :JSON.stringify(member),
+       success:function (data,textStatus){
+       },
+       error:function(data,textStatus){
+          alert("에러가 발생했습니다.");
+       },
+       complete:function(data,textStatus){
+       }
+    });  //end ajax
+  ```
+
+- Http 메서드의 기능
+
+  - POST : 추가
+  - GET : 조회
+  - PUT : 수정
+  - DELETE : 삭제
+
+# Day33
+
+- 
+
+
+
 # Q&A
 
 1. 컨테이너란?
 
    - 자기 실행 환경, 서블릿 실행 환경
    - 톰캣 : 서블릿의 생성, 초기화, 서비스 실행, 소멸에 관한 모든 권한을 가지고 서블릿을 관리
+   
 2. 페이지는 무엇인가?
 
    - 정보를 제공해주는 역할, 후에 프로세스를 처리해주는 역할까지 확장, servlet이 이 역할을 맡게 됨
+   
 3. 빈(bean)이란?
 
    - 오브젝트, 인스턴스 객체
+   
 4. url 분석
 
    - ``https://us02web.zoom.us/postattendee?mn=1osXnULwF-l8SkxYDBYzwdQ1X4sLlUk_oy4c.5bTyFkjbE08tsg5R&id=1``
@@ -231,34 +360,48 @@
    - us02web.zoom.us 도메인
    - postattendee 페이지
    - ?mn=1osXnUL~ 쿼리 스트링 key&value방식
+   
 5. 스프링이란?
    - MVC모델을 자동화 한 것
+   
 6. 프로젝트 구조란?
    - 환경 설정을 의미, 각종 파일이 어디에 위치하는지에 유의
+   
 7. 22장에서는 ConnectionManager가 존재하지 않는 이유?
    - Spring에서는 컨테이너가 ConnectionManager의 역할을 함
+   
 8. 스프링의 두 가지 기능
    - DI 와 IoC
    - 데이터를 외부에서 공급하고, 데이터를 처리하는 클래스도 외부에서 공급함
+   
 9. 824p의 제대로 처리해 주지 않으면의 의미는?
    - Close가 되지 않은 것을 의미
+   
 10. 마이바티스나 하이버네이트 같은 데이터베이스 연동관련 프레임워크 : ORM FrameWork
+
 11. ``<bean>``태그를 모두 작성하려 하기 보다 그 안의 ``<prop key>``값과 ``<property>`` 설정에 더 집중할 것
+
 12. 현재 프로그램의 특징
     - 요구사항의 변경이 심해 언제든지 코딩의 변화가 필요함
     - 따라서 DI와 IoC와 같은 기술을 가진 스프링이 필요한 것, 고정 제거
+    
 13. 스프링의 목적
     - 쉽게 기업형 프로그램(반제품을 통해)을 만들기 위해
+    
 14. Dependency Injection이란?
     - 작업절차 진행 시 자기책임성의 원칙에 따라서 데이터에 의존할 수 밖에 없음
     - 한 클래스가 필요로 하는 데이터를 생성자나 set메소드를 통해서 공급받는데 그 타입이 클래스타입이다.
     - 기존과 무엇이 다른가? 개발자가 직접 작성하는 것이 아니라 필요한 시점에 <u>외부에서 컨테이너가 자동(IoC)</u>으로 Injection해줌
+    
 15. Servlet : server applet
+
 16. 마이바티스(ORM)의 역할
     - JDBC의 역할, 커넥션관리(Connection pooling), action태그를 이용해서 태그 안의 정보로 <u>외부에서</u> 작업지시가 이루어짐
+    
 17. 다형성이란?
     - 상위 클래스의 타입을 가진 변수에 하위클래스를 인스턴스할 수 있다.
     - 자바 언어의 특징
+    
 18. 프레임 워크란?
     - 반 제품, 반 자동화
     - 연결의 방법과 구조는 이미 정해져 있음
@@ -277,6 +420,18 @@
     - pom.xml : jar파일 자동 업로드
 
 21. member.xml에서 resultMap 리스트를 리턴할 때
+
+22. 서버에서 객체 리스트가 브라우저에서 자바스크립트 안으로 들어왔을 때, 자바의 객체를 자바스크립트 안에서 사용하기 위한 방법
+
+    - 받는 data 객체에 JSON.stringify()를 이용
+
+    ```jsp
+    success:function (data,textStatus){
+              alert(JSON.stringify(data));
+          },
+    ```
+
+23. RestPool을 이용해서 기존에 자바에서 사용하던 것을 자바스크립트를 이용해서 사용할 수 있음
 
 
 
