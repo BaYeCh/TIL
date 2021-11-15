@@ -167,3 +167,16 @@
 
 - Validation(검증)을 주 목적으로 jQuery를 이용함
 
+## Scrum
+
+![스크럼방법론](md-images/untitle.png/%EC%8A%A4%ED%81%AC%EB%9F%BC%EB%B0%A9%EB%B2%95%EB%A1%A0.JPG)
+
+- Product Owner (발주자)
+  - ScrumMaster의 입장에서가 아닌 PO의 입장에서 웹의 여러 가지 서비스 중 불편하거나 개선을 생각
+- ProductBacklog (아이디어)
+
+## AI
+
+- Digital Transformation 분야에서 많은 기회가 있을 수 있음
+- 라즈베리 파이의 커맨드 창을 열어서 ifconfig를 치고 wlan에 나와 있는 IP주소를 확인할 수 있음
+
