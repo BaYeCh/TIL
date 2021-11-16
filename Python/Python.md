@@ -221,9 +221,245 @@ def makeRandomNumber():
     pass
 ```
 
-- 
+## 리스트
 
+- 데이터의 목록을 다루는 자료형
 
+  ```python
+  a = ['사과','파인애플','배']
+  ```
+
+- 문자열처럼 참조 연산이 가능
+
+- 슬라이싱 가능 
+
+- +연산자를 통한 리스트간의 결합 가능
+
+  ```python
+  a=[1,2,3,4]
+  b=[5,6,7]
+  a+b
+  [1,2,3,4,5,6,7]
+  ```
+
+- 예제
+
+  ```python
+  import random
+  def makeRandomNumber():
+      # 1~45까지 수 중 랜덤으로 6개의 수를 생성해서 리스트에 삽입한 후 출력
+      list = []
+      for _ in range(6):
+          rnd = random.randint(1,46)
+          list.append(rnd)
+          # print(rnd, end="\t")
+          pass
+      print(list)
+      print(sorted(list))
+      print(list)
+      print(list.sort())
+      print(list)
+      pass
+  ```
+
+  ![파이썬리스트예제](md-images/untitle.png/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8%EC%98%88%EC%A0%9C.JPG)
+
+- 중복 없는 랜덤 수 만들기
+
+  ```python
+  def getLottoNumber():
+      mlist = []
+      while True:
+          rnd= random.randint(1,46)
+          if rnd not in mlist:
+              mlist.append(rnd)
+              pass
+          if len(mlist)==6:
+              break
+              pass
+          pass
+      print(sorted(mlist))
+      pass
+  ```
+
+- 달력 만들기
+
+  ```python
+  import calendar
+  def viewCalendar(year, month):
+      # 만월 달력을 출력하는 코드 작성
+      space, lastDay = calendar.monthrange(year, month)
+      print("\t\t\t{0}년 {1}월\t\t\t".format(year, month))
+      print("일\t월\t화\t수\t목\t금\t토")
+      for _ in range(space + 1):
+          print(" ", end="\t")
+          pass
+      for i in range(1,lastDay+1):
+          print(i, end="\t")
+          if (space+1+i)%7==0:
+              print()
+              pass
+          pass
+      pass
+  ```
+
+  ![파이썬달력만들기](md-images/untitle.png/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EB%8B%AC%EB%A0%A5%EB%A7%8C%EB%93%A4%EA%B8%B0.JPG)
+
+  - 파이썬에서 monthrange에서 요일은 월요일이 0임을 주의
+  - 변수 선언을 두개를 동시에 할 수 있는 것 확인
+  - 입력을 통해서 값 받기
+
+  ```python
+  year = int(input('please input year >>>'))
+  month = int(input('please input month >>>'))
+  step1.viewCalendar(year,month)
+  ```
+
+## 튜플
+
+- 리스트와 동일하지만 변경(수정, 삭제)이 불가하다는 특징을 가짐(Read Only)
+
+- 소프트웨어의 성능 향상에 도움, 생성 과정이 간단
+
+- 오염 우려가 없어 원본을 그대로 사용 가능
+
+- 프로그래머가 자기 코드를 신뢰할 수 있다는 장점
+
+- 위경도 좌표나 RGB 색상처럼 작은 규모의 자료구조를 구성하기에 적합
+
+  ```python
+  a = (1,2,3) # []가 아닌 ()사용
+  a = 1,2,3 # ()를 사용하지 않아도 됨
+  a = (1,) # 요소가 하나인 경우 요소 뒤 콤마
+  ```
+
+- 문자열도 변경이 불가능한 자료형임(immutable)
+
+- 슬라이싱과 +연산자를 이용한 튜플간 결합 가능
+
+- 딕셔너리(맵)로 바꿀 수 있음
+
+  ```python
+  a = 1,2,3
+  one,two,three = a
+  one >>> 1
+  two >>> 2
+  three >>> 3
+  ```
+
+  - 언패킹 : 튜플의 각 요소를 여러 개의 변수에 할당하는 것
+
+## 딕셔너리
+
+- 리스트처럼 첨자를 이용해서 요소에 접근
+- 문자열과 숫자를 비롯해서 변경이 불가능한 형식이면 어떤 자료형이든 가능
+- 중괄호 사용
+- 배열 표기법을 이용해서 생성, 조회를 함
+- ``pop()`` : 딕셔너리 안에 있는 키-값 쌍을 제거
+- 키값은 String으로 하는 것이 관례
+- 배열 표기법 :  키값에 인덱스값을 넣어주어서 list처럼 활용
+- list와 딕셔너리를 구분할 것
+
+## 파일에 데이터 읽고 쓰기
+
+- **열고 읽고(쓰고) 닫고**
+
+  ```python
+  file = open('test.txt', 'w')
+  ```
+
+- 텍스트나 파일을 읽을 때 한 줄씩 읽어야 함
+
+- '열었으면 닫아야 한다'를 도와주는 ``with as``
+
+  ```python
+  with open(파일이름) as 파일객체:
+      # 파일객체=open(파일이름)
+      # 코드블록
+      # 읽거나 쓰기 후
+      # 그냥 빠져나가면 됨
+  ```
+
+- 파일 슬라이싱
+
+  ```pytho
+  def testSlice():
+      file = open('./data/Abc1115.csv', 'r')
+      lines = file.readlines()
+      file.close()
+      print(lines[:1])
+      temp = []
+      for line in lines[:5]:
+          # temp.append(line[:len(line)-1])
+          temp.append(line[:-1])
+          # print(len(line))
+          pass
+      print(temp)
+      pass
+      # 인덱스가 음수로도 표현될 수 있음
+  ```
+
+  ![파이썬슬라이싱](md-images/untitle.png/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%8A%AC%EB%9D%BC%EC%9D%B4%EC%8B%B1.JPG)
+
+- 파일의 한줄을 ,로 분리하여 리스트로 만들고 해당 리스트를 다시 리스트에 element로 저장하여 출력하는 코드 작성
+
+  ```python
+  def testSplit():
+      file = open('./data/Abc1115.csv', 'r')
+      lines = file.readlines()
+      file.close()
+      list = []
+      for line in lines[:1]:
+     # for line in lines:
+          list = line[:-1].split(',')
+      # temp = line[:-1].split(',')
+      # list.append(temp)
+          pass
+      print(list)
+      # print(list[5][1])
+      # 1~5번까지의 email을 출력
+      for item in list[:5]:
+          print(item[1])
+          pass
+      pass
+  ```
+
+  ![파이썬스플릿예제](md-images/untitle.png/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%8A%A4%ED%94%8C%EB%A6%BF%EC%98%88%EC%A0%9C.JPG)
+
+- 인덱스 부여하기
+
+  ```python
+   	numbers = '12345'
+      for idx, val in enumerate(numbers):
+          print("{0} : {1}".format(idx, val))
+  ```
+
+  ![파이썬enumerate](md-images/untitle.png/%ED%8C%8C%EC%9D%B4%EC%8D%ACenumerate.JPG)
+
+## 객체 지향 프로그래밍
+
+- 구조 확인에 주력
+
+- 클래스의 정의 부터 시작
+
+  ```python
+  Class Car:
+      def _init_(self):
+          # 생성자
+         	self.color = 0xff0000
+      def forward(self):
+          # self가 반드시 있어야 함
+          pass
+      # 자바에서 this와 self가 유사함
+  ```
+
+- 객체 생성은 자바와 달리 new를 쓰지 않고 그대로 쓰인다
+
+  ```python
+  my_car = Car()
+  ```
+
+- 제일 처음 실행되는 파일만을 실행파일로 지정함
 
 # Q&A
 
@@ -241,6 +477,8 @@ def makeRandomNumber():
    - 자료 구조에서 자료를 모을 때 처음인가? 끝인가?를 결정하는 것이 중요
    - 해당 되는 컬렉션이 비어있는가? 채워져 있는가?
 8. 표기에 중점을 두고 공부할 것(자바를 기본으로 python의 특징을 구분할 것)
+8. 여러 개의 속성은 한 줄에 표시한다. 따라서 한 줄씩 읽어야 함
+8. 파이썬은 하나의 함수에서 많은 일을 한다. 다양한 일을 하기 위해서는 외부에서 데이터가 주어져야 함.  많은 파라메터를 집어 넣고 실제로는 소수의 속성에 대해서 표시해서 사용하고, 필요에 따라 숨겨진 속성을 설정한다.
 
 # Error
 
