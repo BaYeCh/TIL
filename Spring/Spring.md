@@ -332,9 +332,60 @@
   - PUT : 수정
   - DELETE : 삭제
 
-# Day33
+# Spring과 Python 연결
 
-- 
+- python에서 requests 를 import하는데 requests는 3rd Party라서 다운로드 해주어야 함
+
+- 다운로드 방법(requests)
+
+  1. 제목창에 File을 눌러서  Setting 클릭
+  2. Project:Data(본인디렉토리) 를 선택 후 ``+``를 클릭해서 검색후 install
+
+- eclipse 파트
+
+  - HomeController
+
+    ```java
+    @Controller
+    public class HomeController {
+        @ResponseBody
+    	@RequestMapping(value="/reqInfo" ,method = RequestMethod.POST)
+    	public void removeMember(@RequestParam("id") String id,
+    									@RequestParam("pwd") String pwd,
+    			           HttpServletRequest request, HttpServletResponse response) throws Exception{
+    		request.setCharacterEncoding("utf-8");
+    		System.out.print(id+", "+ pwd);
+    		//브라우저 이동 없이 직접 브라우저에 데이터를 전달하는 코드 작성
+    		response.getWriter().print("working");
+    }
+    ```
+
+- python 파트
+
+  - functionModule.py
+
+  ```python
+  import requests
+  
+  
+  def sendURL():
+      url = 'http://localhost:9090/echo/reqInfo'
+      data = {'id':'admin','pwd':'1234'}
+  
+      response = requests.post(url, data)
+      print(response.text)
+      pass
+  ```
+
+  - main.py
+
+  ```python
+  from classThree.functionModule import sendURL
+  sendURL()
+  # 결과 : working
+  ```
+
+- 파이썬과 이클립스가 어떻게 주고 받는지에 주목
 
 
 
@@ -433,6 +484,8 @@
 
 23. RestPool을 이용해서 기존에 자바에서 사용하던 것을 자바스크립트를 이용해서 사용할 수 있음
 
+23. Maven을 가지고 있다면 Pom.xml이 같이 존재함
+
 
 
 # Error
@@ -511,3 +564,7 @@ ContextLoaderListener를 추가하여 실행하여 확인한다
     1. post를 이용하여 url정보에 한글이 기입되는 경우를 제거 
     2. SetCharacterEncoding을 이용
     3. ``<a>``태그로 보내는 것이 아니라 ``<form>``태그로 변환하여 보내면 원인을 제거 가능
+  
+- ![에코스프링에러](md-images/untitle.png/%EC%97%90%EC%BD%94%EC%8A%A4%ED%94%84%EB%A7%81%EC%97%90%EB%9F%AC.JPG)
+
+연결이 되지 않았음을 의미 POST를 GET으로 바꿔줌으로써 해결
