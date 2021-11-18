@@ -175,22 +175,93 @@
   - ScrumMaster의 입장에서가 아닌 PO의 입장에서 웹의 여러 가지 서비스 중 불편하거나 개선을 생각
 - ProductBacklog (아이디어)
 
+## 코딩테스트
+
+- 알고리즘이 프로그래머로써의 역량을 보여주는 것은 아니다.
+- 알고리즘이 적용되는 파트가 10%가량의 점유율을 가진다.
+- 코딩테스트의 가장 주안점은 논리성을 보고자 함.
+- 최근에는 어려워져 외워서 테스트를 보는 형태가 됨
+- 알고리즘 문제 풀이
+  - [1](https://programmers.co.kr/)
+  - [2](https://www.acmicpc.net/)
+  - [3](https://swexpertacademy.com/main/main.do)
+
 ## AI
 
 - Digital Transformation 분야에서 많은 기회가 있을 수 있음
 - 라즈베리 파이의 커맨드 창을 열어서 ifconfig를 치고 wlan에 나와 있는 IP주소를 확인할 수 있음
 - 음성인식(STT, Speech-to-Text)
   - AMK 실습 ex2
-
 - 음성합성(TTS, Text-to-Speech)
   - AMK 실습 ex3(동작 안함)
-
 - 기업에서 요구하는 인재상이란?
   - 가지고 있는 데이터를 활용해서 또 다른 데이터를 재생산하는 아이디어를 반영해서 소프트웨어를 만들 수 있는 지식
   - 시스템 지식이 필요하다
   - 기발한 아이디어는 시스템과 결합했을 때 발생한다
-
 - MVC모델의 Service 파트에 들어가서 DB에서 쿼리를 보내거나 Controller로 작업지시를 내리는 역할을 한다.
 - AI에 대한 기본지식을 첨가해서 만들고자 하는 소프트웨어를 개선하는데 기여함
 - api는 제공하는 쪽에서 결정권을 가지고 있기 때문에 우리가 원하는 것을 찾지 못한다면 쓰지 못하므로 과감히 버릴 것
+- AI쪽에 관심이 있다면 챗봇을 통해서 기본을 다져보는 것도 좋은 방법이 될 것
+
+## Cloud
+
+- 무수한 컴퓨터로 연결된 네트워크 언제 어디에서나 접속할 수 있음
+- 통신망을 통해서 음성, 데이터 등을 전송 수신을 할 수있음
+
+### Naver Cloud Platform
+
+- ![mvc확장](md-images/untitle.png/mvc%ED%99%95%EC%9E%A5.PNG)
+
+- 필요한 것을 골라 쓴다
+
+- api해석
+
+  ```java
+  public String translate(String words) throws DataAccessException {
+  			// TODO Auto-generated method stub
+  			//String result = "번역완료";
+  			 StringBuffer res = null;
+  			 String clientId = "y3ewx22er5";//애플리케이션 클라이언트 아이디값";
+  		     String clientSecret = "z2Zsxj68tX5B0DUADpbSgjdEqmkMjlkfQmyK3wZC";//애플리케이션 클라이언트 시크릿값";
+  		     try {
+  		         String text = URLEncoder.encode(words, "UTF-8");
+  		         String apiURL = "https://naveropenapi.apigw.ntruss.com/nmt/v1/translation";
+  		         //jdbc 처리하던 방법과 유사
+  		         URL url = new URL(apiURL);
+  		         HttpURLConnection con = (HttpURLConnection)url.openConnection();//DB연결할 때 썼던 connection과 비슷
+  		         con.setRequestMethod("POST");
+  		         con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
+  		         con.setRequestProperty("X-NCP-APIGW-API-KEY", clientSecret);
+  		         // post request
+  		         String postParams = "source=ko&target=en&text=" + text;
+  		         con.setDoOutput(true);
+  		         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+  		         wr.writeBytes(postParams); //바이트로 쪼갬
+  		         wr.flush(); //남김없이 모두 보내는(변기 물 내리는 것 생각)
+  		         wr.close();
+  		         int responseCode = con.getResponseCode();
+  		         BufferedReader br;
+  		         if(responseCode==200) { // 정상 호출
+  		             br = new BufferedReader(new InputStreamReader(con.getInputStream()));//바이트로 들어온 것을 문자열로 바꾸고 
+  		         } else {  // 오류 발생
+  		             br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+  		         }
+  		         String inputLine;
+  		         res = new StringBuffer();
+  		         while ((inputLine = br.readLine()) != null) {
+  		             res.append(inputLine);
+  		         }
+  		         br.close();
+  		         System.out.println("service "+res.toString());
+  		     } catch (Exception e) {
+  		         System.out.println(e);
+  		     }
+  			
+  		     //요청한 내용에 대한 번역한 결과
+  			return res.toString();
+  			// res.toString()의 결과service {"message":{"@type":"response","@service":"naverservice.nmt.proxy","@version":"1.0.0","result":{"srcLangType":"ko","tarLangType":"en","translatedText":"Hello"}}}
+  }
+  ```
+
+  
 
