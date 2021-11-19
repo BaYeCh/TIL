@@ -214,7 +214,9 @@
 
 - 필요한 것을 골라 쓴다
 
-- api해석
+- api의 활용 코드는 제공되나 본인이 사용하는 툴이나 구조에 맞게 재 작성해주어야 함
+
+- api해석(Papago Translation)
 
   ```java
   public String translate(String words) throws DataAccessException {
@@ -263,5 +265,152 @@
   }
   ```
 
-  
+- CLOVA Speech Recognition
+
+  - AiController
+
+    ```java
+    @RequestMapping(value="/clovaSTT", produces = "application/text; charset=UTF-8")
+    	@ResponseBody
+    	public String stt(@RequestParam("uploadFile") MultipartFile file,
+    								@RequestParam("language") String language) {
+    		String result = "";
+    		
+    		try {
+    			//1. 파일 저장 경로 설정 : 실제 서비스 되는 위치 (프로젝트 외부에 저장)
+    			  String uploadPath =  "c:/ai/";
+    			  
+    			  //2.원본 파일 이름
+    			  String originalFileName = file.getOriginalFilename();  
+    			  
+    			  //3. 파일 생성 
+    			  String filePathName = uploadPath + originalFileName;
+    			  File file1 = new File(filePathName);
+    			  System.out.println(filePathName);
+    			  //4. 서버로 전송
+    			  file.transferTo(file1);
+    			  
+    			  result = aiService.clovaSpeechToText(filePathName, language);
+    			  System.out.println("ai "+result);
+    			  
+    		}catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		return result;
+    	}
+    ```
+
+  - AiService
+
+    ```java
+    public String clovaSpeechToText(String filePathName, String language) {
+    		// TODO Auto-generated method stub
+    		String clientId = "";             // Application Client ID";
+            String clientSecret = "";     // Application Client Secret";
+            String result = null;
+            try {
+                String imgFile = filePathName;
+                //파일 객체 생성
+                File voiceFile = new File(imgFile);
+    
+                //String language = "Kor";        // 언어 코드 ( Kor, Jpn, Eng, Chn )
+                String apiURL = "https://naveropenapi.apigw.ntruss.com/recog/v1/stt?lang=" + language;
+                URL url = new URL(apiURL);
+    
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                conn.setUseCaches(false);
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+                conn.setRequestProperty("Content-Type", "application/octet-stream");
+                conn.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
+                conn.setRequestProperty("X-NCP-APIGW-API-KEY", clientSecret);
+    
+                
+                OutputStream outputStream = conn.getOutputStream();
+                FileInputStream inputStream = new FileInputStream(voiceFile);
+                byte[] buffer = new byte[4096];
+                int bytesRead = -1;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                outputStream.flush();
+                inputStream.close();
+                BufferedReader br = null;
+                int responseCode = conn.getResponseCode();
+                if(responseCode == 200) { // 정상 호출
+                    br = new BufferedReader(new InputStreamReader(conn.getInputStream(),"utf8"));
+                } else {  // 오류 발생
+                    System.out.println("error!!!!!!! responseCode= " + responseCode);
+                    br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                }
+                String inputLine;
+                
+                if(br != null) {
+                    StringBuffer response = new StringBuffer();
+                    while ((inputLine = br.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    br.close();
+                    System.out.println(response.toString());
+                    result = response.toString();
+                    //왜 toString인가? 코드가 지저분해짐(String으로 사용하면 정보 수정관리가 쉽지 않음)
+                    //브라우저나 페이지가 했던 작업을 대신 해주는 것
+                    //String은 불변의 자료형(내부적 배열(크기 고정))
+                } else {
+                    System.out.println("error !!!");
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+    		return result;
+    	}
+    ```
+
+  - ``stt.js`` 해석
+
+    ```js
+    alert('stt_text');
+     $(function(){
+    	$('#sttForm').on('submit', function(event){
+    		event.preventDefault(); //submit 후에  reload 안 되게
+    		formData = new FormData($('#sttForm')[0]);
+    		
+    		$.ajax({
+    			type:"post",
+    			enctype:"multipart/form-data",//필수
+    			contentType:"application/json; charset:UTF-8",
+    			url:"clovaSTT",
+    			data:formData,
+    			processData:false, //필수
+    			contentType:false, //필수
+    			success:function(result){
+    				alert(result);
+    				data = JSON.parse(result);
+                    //key&value 값으로 받음(Map방식)
+    				$('#resultDiv').text(data.text);
+    			},
+    			error:function(e){
+    				alert("에러 발생 : " + e);
+    			}			
+    		});
+    	});
+    });
+    ```
+
+    한글 처리가 이루어지지 않았고, 이는 입력과 출력의 문제에서 해결할 수 없었음(바이트로 쪼개서 해석하기 때문에) 이를 해결하기 위해서
+
+    ```java
+    br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf8"));//바이트로 들어온 것을 문자열로 바꾸고
+    //utf8을 추가하여 해결
+    ```
+
+    
+
+
+#### Error
+
+- ![STT500에러](md-images/untitle.png/STT500%EC%97%90%EB%9F%AC.JPG)
+
+  연결하지 못했다는 신호 이 경우는 따로 url을 접속한는 RequestMapping을 만들어 주지 않아서 생겼다.
 
