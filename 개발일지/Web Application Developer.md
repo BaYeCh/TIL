@@ -412,7 +412,20 @@
 
 - ![STT500에러](md-images/untitle.png/STT500%EC%97%90%EB%9F%AC.JPG)
 
-  연결하지 못했다는 신호 이 경우는 따로 url을 접속한는 RequestMapping을 만들어 주지 않아서 생겼다.
+  연결하지 못했다는 신호 이 경우는 따로 url을 접속하는 RequestMapping을 만들어 주지 않아서 생겼다.
+
+- API와 이클립스 간의 연결은 스트림을 통해서 이루어 짐
+
+- TTS
+
+  - ```java
+    var formData = new FormData($('#ttsForm')[0]);
+    //
+    ```
+
+  - 새로 연습할 때 주의점
+
+    - maxSize를 지켰는가를 확인(servlet-context에서 확인)
 
 ## 취업 관련
 
