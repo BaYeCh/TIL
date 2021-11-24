@@ -1,5 +1,7 @@
 # Web Application Developer
 
+오늘 당신이 헛되이 보낸 하루는 어제 죽은 이가 그렇게 보내고 싶었던 내일이었습니다.
+
 ## Network
 
 - 3-Tier(Client-Server-Database)
@@ -426,6 +428,11 @@
   - 새로 연습할 때 주의점
 
     - maxSize를 지켰는가를 확인(servlet-context에서 확인)
+  
+- Web Dynamic Map
+
+  - 할당한 url을 정확하게 사용할 것
+
 
 ## 취업 관련
 
