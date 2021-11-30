@@ -68,6 +68,8 @@
 - 헬스케어
 - 빠르게 병원에 대한 정보를 확인하고 바로 예약 혹은 접수가 가능한 곳을 확인할 수 있어야 함
 - '여기는 다 있더라'보다는 '여기는 확실하더라'가 현실적으로 보임
+- 챗봇을 통해 상식퀴즈를 제공(무료한 병원 대기시간에 오락거리를 제공하면서 웹에서의 활동시간을 늘림)
+- 맵을 화면 전면에 배치하여 가장 먼저 접근할 수 있는 정보를 최우선해서 보여줌
 
 ### 요구사항
 
@@ -212,9 +214,81 @@
 
 - 로그인 이후 회원관리 제작
   - 첫 기본 화면은 로그인 화면에서 아이디와 비밀번호를 받아서 로그인 하거나 일치하지 않는 경우 재 작성 알림창
-  - 회원가입 버튼에서 회원가입 폼을 호출하고 호출된 폼에서 여러 가지 정보를 받아 회원 생성
+  - 회원가입 버튼에서 회원가입 폼을 호출하고 호출된 폼에서 원하는 정보를 받아 회원 생성
+  - 아이디, 닉네임, 이메일의 경우 다른 사용자와 겹치는 정보가 되어서는 안되기 때문에 Ajax를 이용하여 간단하게 DB에 있는 내용을 비교하여(있는지 확인) 확인해주는 알림창을 띄
   
-  
+- 계정은 두 종류(관리자, 사용자)
+- 관리자 계정
+  - 유저들의 정보를 관리할 수 있음(회원 삭제, 게시물 관리)
+
+- 유저 계정
+  - 마이페이지에서 유저의 개인정보들을 수정하거나 탈퇴할 수 있음
+
+
+## 코딩
+
+### Controller
+
+- 회원가입 및 중복 확인
+
+```java
+@Controller("memberController")
+public class MemberController {
+	@Autowired
+	private MemberService memberService;
+	@Autowired
+	private MemberVO memberVO;
+	
+	@RequestMapping(value = "/view_member.do", method = RequestMethod.GET)
+	public String member(HttpServletRequest request, HttpServletResponse reponse) {
+		
+		return "/member/join";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/addMember.do", method = RequestMethod.POST)
+	public void addMember(@ModelAttribute("member") MemberVO member,
+									HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		System.out.println(member);
+		boolean flag =  memberService.addMember(member);
+		response.getWriter().print(flag);
+		
+	}
+	@ResponseBody
+	@RequestMapping(value = "/idCheck.do", method = RequestMethod.POST)
+	public void checkMember(@RequestParam("id") String id,
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
+		boolean flag = memberService.findMemberId(id);
+		response.getWriter().print(flag);
+		//System.out.println(flag);
+	}
+	@ResponseBody
+	@RequestMapping(value = "/emailCheck.do", method = RequestMethod.POST)
+	public void checkMemberEmail(@RequestParam("email") String email,
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
+		boolean flag = memberService.findMemberEmail(email);
+		response.getWriter().print(flag);
+		//System.out.println(flag);
+	}
+	@ResponseBody
+	@RequestMapping(value = "/subNameCheck.do", method = RequestMethod.POST)
+	public void checkMemberNickname(@RequestParam("sub_name") String sub_name,
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
+		boolean flag = memberService.findMemberSubName(sub_name);
+		response.getWriter().print(flag);
+		//System.out.println(flag);
+	}
+}
+```
+
+- 입력 창으로부터 원하는 정보들을 받아들여 Service를 거쳐 DAO에서 쿼리를 생성하여 CRUD
+- 중복확인
+  - DB에 쓰고자 하는 컬럼에 중복되는 정보라면 이를 확인해 주고 알림창으로 경고
+  - 기본적으로 안에 있는 정보인지 확인만 하면 되기 때문에 select 쿼리를 이용하여 존재 유무 파악
+- 
+
+
 
 
 
