@@ -534,3 +534,10 @@ select
 - 과거에 고도의 복잡한 업무절차(function의 비중이 커짐)로 인해 빈도가 줄어들었음
 - 복잡한 절차는 데이터베이스가 감당하기 어렵고 이를 자바와 같은 프로그래밍 언어가 대신 하게 됨
 - 개념적 모델링, 논리적 모델링, 물리적 모델링으로 나뉨
+
+## MySQL
+
+- 기본적인 것은 Oracle과 다를 바 없으나 GUI 기능을 이용해서 쉽게 테이블을 설정할 수 있음
+- My SQL Workbench에서 Reverse Engineering을 통해서 GUI 환경에서 테이블 설정을 할 수 있음
+- 하지만 table이 생성되는 것은 아니니까 Forward Engineering을 해주어야 table을 생성할 수 있음
+
