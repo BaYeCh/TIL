@@ -340,7 +340,15 @@ public class MemberController extends HttpServlet {
   });
   ```
 
-- 
+  - 페이지를 변경할 때 쓰는 메소드
+
+    ```java
+    window.location.assign();
+    //window.location.href();>>원래 알고 있던 형태는 이것이었으나, Ajax에서는 먹히지 않음
+    ```
+
+    
+
 
 # Error
 
