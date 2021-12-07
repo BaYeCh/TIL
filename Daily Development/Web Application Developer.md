@@ -1,6 +1,6 @@
 # Web Application Developer
 
-오늘 당신이 헛되이 보낸 하루는 어제 죽은 이가 그렇게 보내고 싶었던 내일이었습니다.
+>  오늘 당신이 헛되이 보낸 하루는 어제 죽은 이가 그렇게 보내고 싶었던 내일이었습니다.
 
 ## Network
 
@@ -29,7 +29,7 @@
 
 
 
-- 클라이언트에서 요청을 보내서 서버에서 받고 서버는 
+- 클라이언트에서 요청을 보내서 서버에서 받고 서버는 이를 받아서 로직을 수행한다.
 
 ## 자바스크립트
 
@@ -49,7 +49,7 @@
   var name = "";
   ```
 
-  타입을 지정하지 않아도 알아서 판단
+  타입을 지정하지 않아도 알아서 판단(Python도 같은 특징을 갖음)
 
 - ``HTML``에서의 ``JavaScript``
 
@@ -77,7 +77,7 @@
 - 선언적 함수
 
   ```javas
-  function 함수(){
+  function 함수이름(){
   
   }
   ```
@@ -85,7 +85,7 @@
 - 매개변수와 반환 값
 
   ```javas
-  function 함수 이름(매개변수, 매개변수, 매개변수){
+  function 함수이름(매개변수, 매개변수, 매개변수){
   	//함수코드
   	return 반환 값;
   }
@@ -476,9 +476,77 @@
 
   ![챗봇웰컴메시지나오지않는에러](md-images/untitle.png/%EC%B1%97%EB%B4%87%EC%9B%B0%EC%BB%B4%EB%A9%94%EC%8B%9C%EC%A7%80%EB%82%98%EC%98%A4%EC%A7%80%EC%95%8A%EB%8A%94%EC%97%90%EB%9F%AC-16381675232071.JPG)
 
-  다른 사람의 URL을 사용하니까 정상적으로 작동됨.
+  다른 사람의 URL과 키를 사용하니까 정상적으로 작동됨.
   
-  내가 만든 API에 문제가 있는 것으로 보임
+  내가 만든 API에 문제가 있는 것으로 보임(맞왜틀 시전중)
+
+## 공공데이터 포탈
+
+- xml 파싱
+
+  ```java
+  public class test3 {
+  
+      // tag값의 정보를 가져오는 메소드
+  	private static String getTagValue(String tag, Element eElement) {
+  	    NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
+  	    Node nValue = (Node) nlList.item(0);
+  	    if(nValue == null) 
+  	        return null;
+  	    return nValue.getNodeValue();
+  	}
+  
+  	public static void main(String[] args) {
+  		int page = 1;	// 페이지 초기값 
+  		String servicekey = "KNJDk8kQqqEUjNwKv4aYv2v6KA4JUb3i3uLgrv36XFZ0OW3GvOh1ILHDtQDA0lWMxIoxc9m%2FjGdD9E5lvlY5xg%3D%3D";	// 병원 위치 찾기
+  		String WGS84_LON = "127.085156592737";	//입력 사항
+  		String WGS84_LAT = "37.488132562487";	//입력 사항
+  		int pageNo = 1;	//입력 사항
+  		String numOfRows = "5";	//입력 사항
+  		try{
+  			while(true){
+  				// parsing할 url 지정(API 키 포함해서) 바꿔야됨
+  				String url = "http://apis.data.go.kr/B552657/HsptlAsembySearchService/getBabyLcinfoInqire?"+"serviceKey="+servicekey+"&WGS84_LON="+WGS84_LON+
+  						"&WGS84_LAT="+WGS84_LAT+"&pageNo="+Integer.toString(pageNo)+"&numOfRows="+numOfRows;
+  				
+  				DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
+  				DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
+  				Document doc = dBuilder.parse(url);
+  				
+  				// root tag 
+  				doc.getDocumentElement().normalize();
+  				//System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+  				
+  				// 파싱할 tag
+  				NodeList nList = doc.getElementsByTagName("item");	//변경함
+  				//System.out.println("파싱할 리스트 수 : "+ nList.getLength());
+  				
+  				for(int temp = 0; temp < nList.getLength(); temp++){
+  					Node nNode = nList.item(temp);
+  					if(nNode.getNodeType() == Node.ELEMENT_NODE){
+  						
+  						Element eElement = (Element) nNode;
+  						//System.out.println("######################");
+  						//System.out.println(eElement.getTextContent());
+  						System.out.println("병원코드  : " + getTagValue("hpid", eElement));	//변경해야됨
+  					}	// for end
+  				}	// if end
+  				
+  				pageNo += 1;
+  				System.out.println("page number : "+pageNo);
+  				if(pageNo > 3){	//변경함
+  					break;
+  				}
+  			}	// while end
+  			
+  		} catch (Exception e){	
+  			e.printStackTrace();
+  		}	// try~catch end
+  	}	// main end
+  }	// class end
+  ```
+
+  
 
 ## 취업 관련
 
