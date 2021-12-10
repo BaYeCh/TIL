@@ -454,7 +454,60 @@
   2. 문자 질문 테스트
   3. 음성 질문 테스트
 
+#### Server
 
+- GUI 환경이 아닌 CLI를 통해서 조작, 관리하는 것에 유의
+
+- 네트워크를 통해서 컴퓨터에 접속하는데 기본적으로 보안이 필요함(ACG)
+
+- 서버 생성 시 상세 정보
+
+  ![NaverServer상세정보](md-images/untitle.png/NaverServer%EC%83%81%EC%84%B8%EC%A0%95%EB%B3%B4.JPG)
+
+- putty 연결 완료
+
+  ![putty연결완료](md-images/untitle.png/putty%EC%97%B0%EA%B2%B0%EC%99%84%EB%A3%8C.JPG)
+
+- mysql 설정
+
+  ```
+  cd /etc/mysql
+  ```
+
+  mysql 한글 설정
+
+  ![puttymysql한글설정](md-images/untitle.png/puttymysql%ED%95%9C%EA%B8%80%EC%84%A4%EC%A0%95.JPG)
+
+  입력 모드에서 ESC로  명령모드로 전환 ``:wq``를 입력 하면 적용 됨
+
+- 설정 성공 화면
+
+  ![설정 성공 화면](md-images/untitle.png/%EC%84%A4%EC%A0%95%20%EC%84%B1%EA%B3%B5%20%ED%99%94%EB%A9%B4.JPG)
+
+- [VI 명령어 정리](https://blockdmask.tistory.com/25)
+
+  - 입력 모드와 명령모드가 있기 때문에 확인 잘 할 것
+  - ``i``(그 자리에서 입력)나 ``a``(맨 뒷자리로 이동하여 입력)를 입력하면 입력모드로 바뀜
+  - 명령 모드에서는 커서를 통해 움직일 수 있으며 해당 자리에서 ``x``를 입력하면 삭제됨
+  - 입력모드가 끝나면 ``ESC``를 입력하여 명령모드로 전환하고 ``:wq``로 종료
+
+  ![VI명령어 정리](md-images/untitle.png/VI%EB%AA%85%EB%A0%B9%EC%96%B4%20%EC%A0%95%EB%A6%AC.jpg)
+
+- GUI에서 하던 복붙은 사용할 수 없음
+
+- Status 확인 후에 ``Ctrl + C``로 종료
+
+- MySQL 연결
+
+  ``<Resourceauth="Container"driverClassName="com.mysql.jdbc.Driver"maxIdle="4"maxTotal="8"name="jdbc/member"password="mcsn504"type="javax.sql.DataSource"url="jdbc:mysql://118.67.133.246:3306/kdt13?useSSL=false&amp;CharacterEncoding=UTF-8&amp;useUnicode=true" username="mcsndev"/>`` 
+
+  이 안에 들어있는 (본인 정보로) 정보를 jdbc.properties에 넣어줄 것
+
+  클라우드에서는 모든 네트워크에서 동작할 수 있어야 하기 때문에 최신버전을 수용하기 어려움
+
+  mysql 8.0 버전은 적용되지 않음(추후 바뀔 수 있음) 따라서 mysql 5.1 버전을 이용해서 적용시킴
+
+  
 
 #### Error
 
