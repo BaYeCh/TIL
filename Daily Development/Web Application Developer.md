@@ -644,4 +644,15 @@ public class test3 {
   chmod 777 fileName
   ```
 
-- 
+## 프로젝트 IMPORT
+
+- ZIP파일의 경우
+  - 단순히 Existing File에서 ZIP파일 끌어오면 됨
+- WAR파일의 경우
+  - 스프링 프로젝트를 EXPORT하더라도 WAR을 임포트 하면 자바 프로젝트로 IMPORT 됨
+  - MAVEN과 SPRING 설정을 해주어야 함
+  - MAVEN 설정
+    - 해당 프로젝트 우클릭 시 ``Configure > Convert Maven--`` POM 문서 생성
+    - ``wepapp/META-INF/maven/파일경로(주의! 잘 확인할 것)/pom.xml``에서 POM 복 붙
+  - SPRING 설정
+    - 해당 프로젝트 우클릭 후 ``SPRING > Add Spring Project nature``로 Spring 설정
