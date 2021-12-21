@@ -19,4 +19,15 @@
 
 # [Scrum](https://en.wikipedia.org/wiki/Scrum_(software_development))
 
+## Work flow
+
+1. Sprint
+2. Sprint Planning
+3. Daily Scrum
+4. Sprint review
+5. Spring retrospective
+6. Backlog refinement
+7. Canceling a sprint
+
 # [Lean Startup](https://en.wikipedia.org/wiki/Lean_startup)
+
