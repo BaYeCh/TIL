@@ -666,3 +666,8 @@ public class test3 {
     - ``wepapp/META-INF/maven/파일경로(주의! 잘 확인할 것)/pom.xml``에서 POM 복 붙
   - SPRING 설정
     - 해당 프로젝트 우클릭 후 ``SPRING > Add Spring Project nature``로 Spring 설정
+
+## 프로젝트 내에서 자바 버전이 맞지 않는 경우
+
+1. build path에서 JRE를 자바 1.8을 선택 
+2. properties에서 project facet java를 1.8로
