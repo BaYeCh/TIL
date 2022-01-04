@@ -671,3 +671,9 @@ public class test3 {
 
 1. build path에서 JRE를 자바 1.8을 선택 
 2. properties에서 project facet java를 1.8로
+
+## 스프링MVC와 스프링 부트의 차이
+
+- 환경설정의 유무 차이
+- 자동화가 빈번하게 이루어지면 논리가 점점 생략될 가능성이 큼(이를 주의)
+- 스프링 부트는 초심자를 위한 프레임워크
