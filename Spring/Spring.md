@@ -282,48 +282,49 @@
   //맵방식
   ```
 
-- ```java
-  @RequestMapping("/membersMap")
-    public Map<Integer, MemberVO> membersMap() {
-      Map<Integer, MemberVO> map = new HashMap<Integer, MemberVO>();
-      //Map방식은 key&value방식으로 앞의 키가 0이 붙고나서 다음의 밸류가 나오는 방식이 나옴
-      for (int i = 0; i < 10; i++) {
-        MemberVO vo = new MemberVO();
-        vo.setId("hong" + i);
-        vo.setPwd("123"+i);
-        vo.setName("홍길동" + i);
-        vo.setEmail("hong"+i+"@test.com");
-        map.put(i, vo); 
-      }
-      return map; 
-    } 
-  //결과
-  {"0":{"id":"hong0","pwd":"1230","name":"홍길동0","email":"hong0@test.com"},"1":{"id":"hong1","pwd":"1231","name":"홍길동1","email":"hong1@test.com"},"2":{"id":"hong2","pwd":"1232","name":"홍길동2","email":"hong2@test.com"},"3":{"id":"hong3","pwd":"1233","name":"홍길동3","email":"hong3@test.com"},"4":{"id":"hong4","pwd":"1234","name":"홍길동4","email":"hong4@test.com"},"5":{"id":"hong5","pwd":"1235","name":"홍길동5","email":"hong5@test.com"},"6":{"id":"hong6","pwd":"1236","name":"홍길동6","email":"hong6@test.com"},"7":{"id":"hong7","pwd":"1237","name":"홍길동7","email":"hong7@test.com"},"8":{"id":"hong8","pwd":"1238","name":"홍길동8","email":"hong8@test.com"},"9":{"id":"hong9","pwd":"1239","name":"홍길동9","email":"hong9@test.com"}}
-  //json도 키&밸류 방식을 취하기 때문에 키&(키&밸류)의 양식을 띔
-  ```
 
-- ```jsp
-  JSONTest.jsp
-  <!-- 네트워크를 통해서 버전을 참조 -->
-  <script src="http://code.jquery.com/jquery-latest.js"></script> 
-  ```
+```java
+@RequestMapping("/membersMap")
+  public Map<Integer, MemberVO> membersMap() {
+    Map<Integer, MemberVO> map = new HashMap<Integer, MemberVO>();
+    //Map방식은 key&value방식으로 앞의 키가 0이 붙고나서 다음의 밸류가 나오는 방식이 나옴
+    for (int i = 0; i < 10; i++) {
+      MemberVO vo = new MemberVO();
+      vo.setId("hong" + i);
+      vo.setPwd("123"+i);
+      vo.setName("홍길동" + i);
+      vo.setEmail("hong"+i+"@test.com");
+      map.put(i, vo); 
+    }
+    return map; 
+  } 
+//결과
+{"0":{"id":"hong0","pwd":"1230","name":"홍길동0","email":"hong0@test.com"},"1":{"id":"hong1","pwd":"1231","name":"홍길동1","email":"hong1@test.com"},"2":{"id":"hong2","pwd":"1232","name":"홍길동2","email":"hong2@test.com"},"3":{"id":"hong3","pwd":"1233","name":"홍길동3","email":"hong3@test.com"},"4":{"id":"hong4","pwd":"1234","name":"홍길동4","email":"hong4@test.com"},"5":{"id":"hong5","pwd":"1235","name":"홍길동5","email":"hong5@test.com"},"6":{"id":"hong6","pwd":"1236","name":"홍길동6","email":"hong6@test.com"},"7":{"id":"hong7","pwd":"1237","name":"홍길동7","email":"hong7@test.com"},"8":{"id":"hong8","pwd":"1238","name":"홍길동8","email":"hong8@test.com"},"9":{"id":"hong9","pwd":"1239","name":"홍길동9","email":"hong9@test.com"}}
+//json도 키&밸류 방식을 취하기 때문에 키&(키&밸류)의 양식을 띔
+```
 
-- ```jsp
-  $.ajax({
-          type:"post",
-          url:"${contextPath}/test/info",
-          contentType: "application/json",
-          //객체를 보내게 되면 자바쪽에서 받지를 못함 따라서 String으로 변환해주어서 네트워크를 통해서 보냄
-          data :JSON.stringify(member),
-       success:function (data,textStatus){
-       },
-       error:function(data,textStatus){
-          alert("에러가 발생했습니다.");
-       },
-       complete:function(data,textStatus){
-       }
-    });  //end ajax
-  ```
+```jsp
+JSONTest.jsp
+<!-- 네트워크를 통해서 버전을 참조 -->
+<script src="http://code.jquery.com/jquery-latest.js"></script> 
+```
+
+```jsp
+$.ajax({
+        type:"post",
+        url:"${contextPath}/test/info",
+        contentType: "application/json",
+        //객체를 보내게 되면 자바쪽에서 받지를 못함 따라서 String으로 변환해주어서 네트워크를 통해서 보냄
+        data :JSON.stringify(member),
+     success:function (data,textStatus){
+     },
+     error:function(data,textStatus){
+        alert("에러가 발생했습니다.");
+     },
+     complete:function(data,textStatus){
+     }
+  });  //end ajax
+```
 
 - Http 메서드의 기능
 

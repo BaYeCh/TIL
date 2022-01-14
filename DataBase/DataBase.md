@@ -148,83 +148,82 @@ INSERT INTO userTBL('~~','--') VALUES;
 - 조회 순서
 
   1.  데이터베이스에 접속
-  2. sql 쿼리 작성 후 입력
-  3. 출력을 받음
-  4. 쿼리와 데이터베이스를 닫음
-  5. 결과 처리
+  2.  sql 쿼리 작성 후 입력
+  3.  출력을 받음
+  4.  쿼리와 데이터베이스를 닫음
+  5.  결과 처리
 
-- ```java
-  //접속
-  public Connection getConnection(){
-      Connection con = null;
-      String driver = "oracle.jdbc.OracleDriver";
-      String url = "jdbc:oracle:thin:@localhost:1521:xe";
-      String id = "HR";
-      String pwd = "1234";
-      
-      Class.forName(driver);
-      con = DriverManager.getConnection(url,id,pwd);
-      return con;
-  }
-  ```
+```java
+//접속
+public Connection getConnection(){
+    Connection con = null;
+    String driver = "oracle.jdbc.OracleDriver";
+    String url = "jdbc:oracle:thin:@localhost:1521:xe";
+    String id = "HR";
+    String pwd = "1234";
+    
+    Class.forName(driver);
+    con = DriverManager.getConnection(url,id,pwd);
+    return con;
+}
+```
 
-- ```java
-  //전체 조회
-  public void readAll(){
-      Connection con = this.getConnection();
-      Statement stmt = con.createStatement();
-      String sql = "SELECT * FROM userTBL3";
-      System.out.println(sql);//출력확인
-      ResultSet rs = stmt.executeQuery(sql);
-      while(rs.next()){
-          //결과를 받는 작업: 데이터를 인스턴스에 집어넣어서 리스트나 COLLECTION으로 변경
-  		System.out.println(rs.getString("userID")+","
-                     +rs.getString("userName")+rs.getInt("birthYear"));
-      }
-      rs.close();
-      stmt.close();
-      con.close();
-  }
-  //결과
-  SELECT * FROM userTBL3
-  LSG     ,이승기,1987
-  KBS     ,김범수,1979
-  KKH     ,김경호,1971
-  JYP     ,조용필,1950
-  LJB     ,임재범,1963
-  EJW     ,은지원,1972
-  JKW     ,조관우,1965
-  BBK     ,바비킴,1973
-  ```
+```java
+//전체 조회
+public void readAll(){
+    Connection con = this.getConnection();
+    Statement stmt = con.createStatement();
+    String sql = "SELECT * FROM userTBL3";
+    System.out.println(sql);//출력확인
+    ResultSet rs = stmt.executeQuery(sql);
+    while(rs.next()){
+        //결과를 받는 작업: 데이터를 인스턴스에 집어넣어서 리스트나 COLLECTION으로 변경
+		System.out.println(rs.getString("userID")+","
+                   +rs.getString("userName")+rs.getInt("birthYear"));
+    }
+    rs.close();
+    stmt.close();
+    con.close();
+}
+//결과
+SELECT * FROM userTBL3
+LSG     ,이승기,1987
+KBS     ,김범수,1979
+KKH     ,김경호,1971
+JYP     ,조용필,1950
+LJB     ,임재범,1963
+EJW     ,은지원,1972
+JKW     ,조관우,1965
+BBK     ,바비킴,1973
+```
 
-- ```java
-  //조건 조회
-  public void readCondition (String data){
-      Connection con = this.getConnection();
-      String sql = "SELECT * FROM userTBL3 WHERE userID = ?";
-      PreparedStatement stmt = con.preapareStatement(sql);
-      stmt.setString(1,data);
-      System.out.println(sql);
-      ResultSet rs = stmt.executeQuery();
-      while(rs.next()){
-          System.out.println(rs.getString("userID")+","
-                     +rs.getString("userName")+rs.getInt("birthYear"));
-      }
-      rs.close();
-      stmt.close();
-      con.close();
-  }
-  //결과
-  SELECT * FROM userTBL3 WHERE userID = ?
-  JYP     ,조용필,1950
-  //기본키의 데이터 타입이 CHAR로 빈칸 까지 포함하지 않으면 원하는 결과값을 얻을 수 없었다.
-  //따라서 VARCHAR로 데이터타입을 변경하거나 빈칸을 포함하여 파라메터를 설정해주어야 한다.
-  ```
+```java
+//조건 조회
+public void readCondition (String data){
+    Connection con = this.getConnection();
+    String sql = "SELECT * FROM userTBL3 WHERE userID = ?";
+    PreparedStatement stmt = con.preapareStatement(sql);
+    stmt.setString(1,data);
+    System.out.println(sql);
+    ResultSet rs = stmt.executeQuery();
+    while(rs.next()){
+        System.out.println(rs.getString("userID")+","
+                   +rs.getString("userName")+rs.getInt("birthYear"));
+    }
+    rs.close();
+    stmt.close();
+    con.close();
+}
+//결과
+SELECT * FROM userTBL3 WHERE userID = ?
+JYP     ,조용필,1950
+//기본키의 데이터 타입이 CHAR로 빈칸 까지 포함하지 않으면 원하는 결과값을 얻을 수 없었다.
+//따라서 VARCHAR로 데이터타입을 변경하거나 빈칸을 포함하여 파라메터를 설정해주어야 한다.
+```
 
 - 위의 모든 과정 중에 Exception을 하는 과정은 생략했다.
 
   - throws 이후 실행클래스에서 try /catch
-
 - 쿼리를 데이터베이스에 입력하고 출력받는 코드는 동일 형태로 기억할 것!
 
 #### Update (수정)
